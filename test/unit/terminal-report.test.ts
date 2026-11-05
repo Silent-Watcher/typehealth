@@ -102,7 +102,7 @@ function renderColored(analysis: AnalysisResult): string {
 test('report opens with the box header and shows project info values', () => {
   const output = render(makeAnalysis())
   assert.ok(output.includes('╭'))
-  assert.ok(output.includes('TYPESCOPE'))
+  assert.ok(output.includes('TYPEHEALTH'))
   assert.ok(output.includes('Type Safety Analyzer'))
   assert.ok(output.includes('╰'))
   assert.ok(output.includes('Project  /tmp/demo-project'))

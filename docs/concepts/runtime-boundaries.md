@@ -1,6 +1,6 @@
 # Runtime Boundaries
 
-TypeScript's type system stops at the edge of your program: data that arrives over HTTP, from a queue, or from `JSON.parse` is typed as `any` (or asserted) and carries no compile-time guarantees. TypeScope's runtime boundary analysis points at places where external data enters the program **without a recognized validation step**.
+TypeScript's type system stops at the edge of your program: data that arrives over HTTP, from a queue, or from `JSON.parse` is typed as `any` (or asserted) and carries no compile-time guarantees. TypeHealth's runtime boundary analysis points at places where external data enters the program **without a recognized validation step**.
 
 ## What this analysis is — and is not
 

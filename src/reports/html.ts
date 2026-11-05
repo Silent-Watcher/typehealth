@@ -81,7 +81,7 @@ export function renderHtmlReport(input: ReportInput): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TypeScope Report</title>
+<title>TypeHealth Report</title>
 <style>
   :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --card:#161b22; --border:#30363d;
           --green:#3fb950; --yellow:#d29922; --red:#f85149; --accent:#58a6ff; --gray:#6e7681 }
@@ -122,7 +122,7 @@ export function renderHtmlReport(input: ReportInput): string {
 <body>
 <main>
   <header>
-    <h1>TypeScope <span class="muted">· Type Safety Analyzer</span></h1>
+    <h1>TypeHealth <span class="muted">· Type Safety Analyzer</span></h1>
     <p class="meta">${escapeHtml(projectDir)}<br>tsconfig: ${escapeHtml(configPath)} · ${p.files} files · ${Math.round(analysis.durationMs)} ms · schema v${SCHEMA_VERSION}</p>
   </header>
 

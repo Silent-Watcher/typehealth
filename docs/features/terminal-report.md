@@ -4,11 +4,11 @@ The default output format. Designed to be readable in a terminal and safe in CI 
 
 ## Example
 
-Real output from `typescope scan` on a small API project:
+Real output from `typehealth scan` on a small API project:
 
 ```text
 ╭──────────────────────╮
-│ TYPESCOPE            │
+│ TYPEHEALTH            │
 │ Type Safety Analyzer │
 ╰──────────────────────╯
 

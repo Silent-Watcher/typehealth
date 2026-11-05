@@ -41,7 +41,7 @@ export function renderTerminalReport(analysis: AnalysisResult, info: ReportInfo,
   const lines: string[] = []
   const c = (text: string, name: ColorName) => colorize(text, name, color)
 
-  lines.push(...box(['TYPESCOPE', 'Type Safety Analyzer'], color))
+  lines.push(...box(['TYPEHEALTH', 'Type Safety Analyzer'], color))
   lines.push('')
 
   lines.push(`${c('Project', 'cyan')}  ${info.projectDir}`)

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="TypeScope logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="TypeHealth logo">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#1a2233"/>
@@ -27,7 +27,7 @@
 
   <!-- TS monogram -->
   <text x="64" y="78" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
-        font-size="42" font-weight="700" fill="#e6edf3">TS</text>
+        font-size="42" font-weight="700" fill="#e6edf3">TH</text>
 
   <!-- scanning line sweeping the tile -->
   <rect x="10" y="4" width="108" height="22" fill="url(#scan)">

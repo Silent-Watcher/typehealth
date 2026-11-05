@@ -1,6 +1,6 @@
 # Testing
 
-TypeScope uses the Node.js native test runner exclusively — `node:test` and `node:assert/strict`. No Jest, no Vitest.
+TypeHealth uses the Node.js native test runner exclusively — `node:test` and `node:assert/strict`. No Jest, no Vitest.
 
 ## Running
 

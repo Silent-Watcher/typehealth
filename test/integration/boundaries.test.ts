@@ -23,7 +23,7 @@ function boundariesOf(code: string): Finding[] {
 }
 
 function makeProject(baseline: string, tsconfig: object, files: Record<string, string>): string {
-  const dir = mkdtempSync(path.join(baseline, 'typescope-boundaries-'))
+  const dir = mkdtempSync(path.join(baseline, 'typehealth-boundaries-'))
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify(tsconfig))
   for (const [name, contents] of Object.entries(files)) {

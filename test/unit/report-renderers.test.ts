@@ -75,11 +75,11 @@ const ALL_METRIC_KEYS = [
   'weakStrictnessFlags',
 ] as const
 
-test('JSON report: schemaVersion is 1 and tool identifies typescope with a semver version', () => {
+test('JSON report: schemaVersion is 1 and tool identifies typehealth with a semver version', () => {
   const report = buildJsonReport(makeInput(makeAnalysis()))
   assert.equal(report.schemaVersion, 1)
   const tool = report.tool as { name: string; version: string }
-  assert.equal(tool.name, 'typescope')
+  assert.equal(tool.name, 'typehealth')
   assert.match(tool.version, /^\d+\.\d+\.\d+/)
 })
 

@@ -25,7 +25,7 @@ interface SampleOptions {
 }
 
 function makeSampleProject(baseline: string, options: SampleOptions = {}): string {
-  const dir = mkdtempSync(path.join(baseline, 'typescope-sample-'))
+  const dir = mkdtempSync(path.join(baseline, 'typehealth-sample-'))
   writeFileSync(
     path.join(dir, 'tsconfig.json'),
     JSON.stringify(options.tsconfig ?? {
@@ -77,7 +77,7 @@ test('respects tsconfig include and exclude patterns', () => {
 })
 
 test('missing tsconfig is an actionable error', () => {
-  const dir = mkdtempSync(path.join(tmpdir(), 'typescope-empty-'))
+  const dir = mkdtempSync(path.join(tmpdir(), 'typehealth-empty-'))
   try {
     const result = loadProject({ projectDir: dir })
     assert.equal(result.ok, false)
@@ -89,7 +89,7 @@ test('missing tsconfig is an actionable error', () => {
 })
 
 test('malformed tsconfig is an error with position info', () => {
-  const dir = mkdtempSync(path.join(tmpdir(), 'typescope-badconfig-'))
+  const dir = mkdtempSync(path.join(tmpdir(), 'typehealth-badconfig-'))
   try {
     writeFileSync(path.join(dir, 'tsconfig.json'), '{ not json ,,')
     const result = loadProject({ projectDir: dir })
@@ -102,7 +102,7 @@ test('malformed tsconfig is an error with position info', () => {
 })
 
 test('files outside the project directory are filtered out', () => {
-  const baseline = mkdtempSync(path.join(tmpdir(), 'typescope-scope-'))
+  const baseline = mkdtempSync(path.join(tmpdir(), 'typehealth-scope-'))
   try {
     const projectDir = makeDir(baseline, 'project')
     writeFileSync(
@@ -121,7 +121,7 @@ test('files outside the project directory are filtered out', () => {
 })
 
 test('explicit --config path is used instead of discovery', () => {
-  const baseline = mkdtempSync(path.join(tmpdir(), 'typescope-explicit-'))
+  const baseline = mkdtempSync(path.join(tmpdir(), 'typehealth-explicit-'))
   try {
     const projectDir = makeDir(baseline, 'project')
     const config = makeFile(baseline, 'configs/tsconfig.json', JSON.stringify({

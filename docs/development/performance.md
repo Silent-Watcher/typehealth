@@ -18,7 +18,7 @@ Benchmark (`node scripts/benchmark.ts <fileCount>`, synthetic project: 17 typed 
 | 300 files / 19,500 positions | 9 ms | 618 ms | 627 ms | ~479 files/s |
 | 1000 files / 65,000 positions | 13 ms | 1096 ms | 1108 ms | ~902 files/s |
 
-Self-scan of the TypeScope codebase (17 files, 512 positions): ~0.5 s. Numbers are indicative, not a certified benchmark suite.
+Self-scan of the TypeHealth codebase (17 files, 512 positions): ~0.5 s. Numbers are indicative, not a certified benchmark suite.
 
 ## Phase 8 verdict
 

@@ -8,7 +8,7 @@ import { loadProject } from '../../src/core/project.ts'
 import { analyzeProject } from '../../src/core/analyzer.ts'
 
 function makeProject(baseline: string, tsconfig: object, files: Record<string, string>): string {
-  const dir = mkdtempSync(path.join(baseline, 'typescope-analyze-'))
+  const dir = mkdtempSync(path.join(baseline, 'typehealth-analyze-'))
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify(tsconfig))
   for (const [name, contents] of Object.entries(files)) {

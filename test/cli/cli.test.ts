@@ -25,19 +25,19 @@ function runCli(args: readonly string[]): { status: number | null; stdout: strin
 test('--version prints version and exits 0', () => {
   const result = runCli(['--version'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /^typescope v\d+\.\d+\.\d+\n$/)
+  assert.match(result.stdout, /^typehealth v\d+\.\d+\.\d+\n$/)
 })
 
 test('--help prints usage and exits 0', () => {
   const result = runCli(['--help'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /Usage: typescope/)
+  assert.match(result.stdout, /Usage: typehealth/)
 })
 
 test('scan --help prints scan usage and exits 0', () => {
   const result = runCli(['scan', '--help'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /Usage: typescope scan/)
+  assert.match(result.stdout, /Usage: typehealth scan/)
   assert.match(result.stdout, /--format/)
 })
 
@@ -74,8 +74,8 @@ test('--format=html writes a report file', () => {
   // Runs in the project root; the written report file is cleaned up below.
   const result = runCli(['scan', '--format=html'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /Report written to .*typescope-report\.html/)
-  rmSync(path.join(ROOT, 'typescope-report.html'), { force: true })
+  assert.match(result.stdout, /Report written to .*typehealth-report\.html/)
+  rmSync(path.join(ROOT, 'typehealth-report.html'), { force: true })
 })
 
 test('nonexistent --cwd exits 2', () => {
@@ -91,7 +91,7 @@ test('nonexistent --config exits 2', () => {
 })
 
 test('directory without tsconfig exits 2 with actionable message', () => {
-  const dir = mkdtempSync(path.join(tmpdir(), 'typescope-noconfig-'))
+  const dir = mkdtempSync(path.join(tmpdir(), 'typehealth-noconfig-'))
   try {
     const result = runCli(['scan', '--cwd', dir])
     assert.equal(result.status, 2)

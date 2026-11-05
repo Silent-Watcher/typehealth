@@ -1,4 +1,4 @@
-# TypeScope Status
+# TypeHealth Status
 
 Snapshot: 2026-11-05
 
@@ -25,7 +25,7 @@ All 10 phases complete — release-ready, publication pending (see PROGRESS.md P
 - R5: Empty-project edge — resolved: tsconfig error 18003 now treated as empty project (D17).
 - R6: `isTypeAssignableTo` used for unrelated-type assertions is a heavier checker call; watch in Phase 8 benchmarks.
 - R7: boundary heuristics are name-based (req/request/ctx, validator method names); false positives/negatives expected and documented. Revisit real-framework behavior (express/amqplib fixtures) if users report noise.
-- R8: README/docs link to https://typescope.dev — domain not registered yet; decide before Phase 10 publication.
+- R8: README/docs link to https://typehealth.dev — domain not registered yet; decide before Phase 10 publication.
 - R6 resolved: benchmark shows checker calls dwarfed by program creation; ~900 files/s at 1000 files. No optimization needed.
 - R9: hardening verified on Linux only; chmod/symlink tests are POSIX-specific (skip/guarded on root, not Windows).
 

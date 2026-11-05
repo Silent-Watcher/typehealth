@@ -1,16 +1,16 @@
 # Analysis Engine
 
-TypeScope builds on the [TypeScript Compiler API](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API). It never re-implements TypeScript parsing or config resolution itself.
+TypeHealth builds on the [TypeScript Compiler API](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API). It never re-implements TypeScript parsing or config resolution itself.
 
 ## Discovery pipeline
 
-`typescope scan` performs discovery in this order:
+`typehealth scan` performs discovery in this order:
 
 1. **Project directory resolution** — the `--cwd` option (default: current directory) is resolved to an absolute path and must be an existing directory.
 2. **tsconfig resolution** — `--config` is used when given; otherwise the nearest `tsconfig.json` up the directory tree from the project directory is used (via `ts.findConfigFile`).
 3. **Config parsing** — the file is read with `ts.readConfigFile`; invalid JSON or schema errors are reported with TypeScript's own diagnostics, and the scan exits with code 2.
 4. **File expansion** — `ts.parseJsonConfigFileContent` expands `include`/`exclude`/`files` patterns exactly as `tsc` would.
-5. **Scope filtering** — on top of the tsconfig result, TypeScope drops:
+5. **Scope filtering** — on top of the tsconfig result, TypeHealth drops:
    - declaration files (`*.d.ts`),
    - any file outside the project directory,
    - any file inside `node_modules/`, `dist/`, `build/` or `coverage/`.

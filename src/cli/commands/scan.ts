@@ -18,19 +18,19 @@ import { supportsColor } from '../../utils/colors.ts'
 export function runScan(request: ScanRequest, stdout = process.stdout): number {
   const projectDir = path.resolve(request.cwd)
   if (!isDirectory(projectDir)) {
-    console.error(`typescope: project directory does not exist: ${projectDir}`)
+    console.error(`typehealth: project directory does not exist: ${projectDir}`)
     return 2
   }
 
   const configPath = request.config !== undefined ? path.resolve(request.config) : undefined
   if (configPath !== undefined && !isFile(configPath)) {
-    console.error(`typescope: tsconfig not found: ${configPath}`)
+    console.error(`typehealth: tsconfig not found: ${configPath}`)
     return 2
   }
 
   const result = loadProject({ projectDir, configPath })
   if (!result.ok) {
-    console.error(`typescope: ${result.message}`)
+    console.error(`typehealth: ${result.message}`)
     return 2
   }
 
@@ -40,7 +40,7 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
     const ref = typeof request.changed === 'string' ? request.changed : undefined
     const changed = getChangedFiles(result.projectDir, ref)
     if (!changed.ok) {
-      console.error(`typescope: ${changed.message}`)
+      console.error(`typehealth: ${changed.message}`)
       return 2
     }
     const changedSet = new Set(changed.files)
@@ -57,7 +57,7 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
   if (request.baseline !== undefined) {
     const baseline = loadBaseline(request.baseline)
     if (!baseline.ok) {
-      console.error(`typescope: ${baseline.message}`)
+      console.error(`typehealth: ${baseline.message}`)
       return 2
     }
     baselineComparison = compareBaseline(baseline.data, analysis)
@@ -79,11 +79,11 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
 
   if (request.format === 'html') {
     // Written to the invoking user's cwd, never into the analyzed project.
-    const outputPath = path.join(process.cwd(), 'typescope-report.html')
+    const outputPath = path.join(process.cwd(), 'typehealth-report.html')
     try {
       writeFileSync(outputPath, renderHtmlReport(input))
     } catch (error) {
-      console.error(`typescope: cannot write report to ${outputPath}: ${error instanceof Error ? error.message : error}`)
+      console.error(`typehealth: cannot write report to ${outputPath}: ${error instanceof Error ? error.message : error}`)
       return 2
     }
     stdout.write(`Report written to ${outputPath}\n`)

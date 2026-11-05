@@ -12,7 +12,7 @@ export interface BaselineData {
 export type BaselineResult = { ok: true; data: BaselineData } | { ok: false; message: string }
 
 /**
- * Load a baseline produced by a previous `typescope scan --format json`
+ * Load a baseline produced by a previous `typehealth scan --format json`
  * (redirected to a file). Only the fields needed for comparison are read;
  * the schema version is validated.
  */
@@ -31,13 +31,13 @@ export function loadBaseline(file: string): BaselineResult {
   if (record['schemaVersion'] !== SCHEMA_VERSION) {
     return {
       ok: false,
-      message: `baseline ${file} has schemaVersion ${String(record['schemaVersion'])}, expected ${SCHEMA_VERSION}. Re-generate the baseline with the same typescope version.`,
+      message: `baseline ${file} has schemaVersion ${String(record['schemaVersion'])}, expected ${SCHEMA_VERSION}. Re-generate the baseline with the same typehealth version.`,
     }
   }
   const metrics = record['metrics']
   const findings = record['findings']
   if (typeof metrics !== 'object' || metrics === null || !Array.isArray(findings)) {
-    return { ok: false, message: `baseline ${file} does not look like a typescope JSON report (missing metrics/findings)` }
+    return { ok: false, message: `baseline ${file} does not look like a typehealth JSON report (missing metrics/findings)` }
   }
   const coverage = (metrics as Record<string, unknown>)['typeCoverage']
   if (coverage !== null && typeof coverage !== 'number') {

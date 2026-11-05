@@ -1,4 +1,4 @@
-# TypeScope Roadmap
+# TypeHealth Roadmap
 
 Ten phases, implemented strictly in order. One commit per completed phase. No future-phase features land early. Completion criteria are mandatory; a phase is not complete if any fail.
 
@@ -11,7 +11,7 @@ Ten phases, implemented strictly in order. One commit per completed phase. No fu
 **Criteria:** `npm run build` (tsdown) passes; `npm run test` (node --test) passes with at least a smoke test; `npm run typecheck` passes; `npm run docs:build` (VitePress) passes; package.json exports + bin configured; `.gitignore` present; committed.
 
 ## Phase 2 — CLI Foundation
-**Goal:** `typescope scan` parses and validates args, prints help/version, correct exit codes; rendering primitives separate from analysis.
+**Goal:** `typehealth scan` parses and validates args, prints help/version, correct exit codes; rendering primitives separate from analysis.
 **Criteria:** tests for every supported argument; --format json/html placeholders route correctly; NO_COLOR / --no-color / non-TTY handled; committed.
 
 ## Phase 3 — TypeScript Project Discovery

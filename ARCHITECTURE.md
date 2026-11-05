@@ -1,10 +1,10 @@
-# TypeScope Architecture
+# TypeHealth Architecture
 
 Initial architecture, Phase 0. Kept minimal; extended only when a phase demands it.
 
 ## Principles
 - Simplicity over abstraction: plain functions and modules, no class hierarchies without need.
-- Do not reinvent the wheel: generic infrastructure (CLI parsing, terminal colors) uses established libraries (commander, picocolors); custom code is reserved for TypeScope-specific analysis, metrics and reporting.
+- Do not reinvent the wheel: generic infrastructure (CLI parsing, terminal colors) uses established libraries (commander, picocolors); custom code is reserved for TypeHealth-specific analysis, metrics and reporting.
 - Performance is part of implementation: reuse TypeScript Program/SourceFile, minimize filesystem ops, exclude node_modules/dist/build/coverage/.d.ts by default. Benchmark before caching or parallelization.
 - Metrics are independent; no composite score.
 - Analysis, metrics, reporting, and CLI stay separated.

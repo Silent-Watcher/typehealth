@@ -1,12 +1,12 @@
 ---
 layout: home
 hero:
-  name: TypeScope
+  name: TypeHealth
   text: TypeScript Type Safety Analyzer
   tagline: Understand how effectively TypeScript's type system is used in your project. Real metrics, honest limitations, zero config.
   image:
     src: /logo.svg
-    alt: TypeScope logo
+    alt: TypeHealth logo
   actions:
     - theme: brand
       text: Introduction
@@ -16,7 +16,7 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: Live sample report
-      link: /demo/typescope-report.html
+      link: /demo/typehealth-report.html
 ---
 
 <style>
@@ -39,12 +39,12 @@ hero:
 ## One command, the whole picture
 
 ```sh
-npx typescope scan
+npx typehealth scan
 ```
 
 <div class="sample-term">
 <span class="t-m">╭──────────────────────╮<br>
-│ </span><span class="t-b">TYPESCOPE</span><span class="t-m">            │<br>
+│ </span><span class="t-b">TYPEHEALTH</span><span class="t-m">            │<br>
 │ Type Safety Analyzer │<br>
 ╰──────────────────────╯</span><br>
 <br>
@@ -91,7 +91,7 @@ Every metric is independent with a [documented formula](/reference/metric-defini
 ```json
 {
   "schemaVersion": 1,
-  "tool": { "name": "typescope", "version": "0.1.0" },
+  "tool": { "name": "typehealth", "version": "0.1.0" },
   "metrics": {
     "typeCoverage": 0.4,
     "eligiblePositions": 10,
@@ -118,7 +118,7 @@ Every metric is independent with a [documented formula](/reference/metric-defini
 }
 ```
 
-**HTML** — a single self-contained file: zero JavaScript, no remote assets, full escaping of source-derived content, works offline. [Open a live sample →](/demo/typescope-report.html)
+**HTML** — a single self-contained file: zero JavaScript, no remote assets, full escaping of source-derived content, works offline. [Open a live sample →](/demo/typehealth-report.html)
 
 **Terminal** — what you saw above: static, CI-log-safe, `NO_COLOR` aware.
 
@@ -126,14 +126,14 @@ Every metric is independent with a [documented formula](/reference/metric-defini
 
 ```sh
 # fail when coverage drops below 80%
-typescope scan --fail-under 80
+typehealth scan --fail-under 80
 
 # only what changed in this PR (validated git reference)
-typescope scan --changed origin/main
+typehealth scan --changed origin/main
 
 # ratchet: fail on coverage drops or new findings vs a committed baseline
-typescope scan --format json > typescope-baseline.json
-typescope scan --baseline typescope-baseline.json
+typehealth scan --format json > typehealth-baseline.json
+typehealth scan --baseline typehealth-baseline.json
 ```
 
 Exit codes: `0` pass · `1` gate failure · `2` usage error. A complete [GitHub Actions recipe](/features/ci-integration) — merge-base, artifact upload and all — is in the docs.

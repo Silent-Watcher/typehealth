@@ -1,6 +1,6 @@
 # Exit Codes
 
-TypeScope uses exit codes to signal results to shells and CI systems.
+TypeHealth uses exit codes to signal results to shells and CI systems.
 
 | Code | Meaning | Examples |
 |------|---------|----------|

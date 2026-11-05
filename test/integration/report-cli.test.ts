@@ -30,7 +30,7 @@ function runCli(args: readonly string[], cwd: string): CliResult {
 
 /** Create a small analyzable TypeScript project under `baseline` and return its directory. */
 function makeProject(baseline: string, tsconfig: object, files: Record<string, string>): string {
-  const dir = mkdtempSync(path.join(baseline, 'typescope-report-'))
+  const dir = mkdtempSync(path.join(baseline, 'typehealth-report-'))
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify(tsconfig))
   for (const [name, contents] of Object.entries(files)) {
@@ -59,7 +59,7 @@ function normalizedText(report: Record<string, unknown>): string {
 }
 
 test('scan --format json exits 0 and prints a parseable v1 report', () => {
-  const workspace = mkdtempSync(path.join(tmpdir(), 'typescope-json-'))
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-json-'))
   const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
   try {
     const result = runCli(['scan', '--format', 'json', '--cwd', projectDir], workspace)
@@ -74,7 +74,7 @@ test('scan --format json exits 0 and prints a parseable v1 report', () => {
 })
 
 test('scan --format json is deterministic across runs after normalizing durationMs', () => {
-  const workspace = mkdtempSync(path.join(tmpdir(), 'typescope-json-'))
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-json-'))
   const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
   try {
     const runOne = runCli(['scan', '--format', 'json', '--cwd', projectDir], workspace)
@@ -92,22 +92,22 @@ test('scan --format json is deterministic across runs after normalizing duration
 test('scan --format html exits 0 and writes an escaped, script-free report into the spawning cwd', () => {
   // The workspace baseline contains '<' so projectDir must be HTML-escaped in
   // the report header; this exercises escapeHtml end-to-end.
-  const workspace = mkdtempSync(path.join(tmpdir(), 'typescope-<html>-'))
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-<html>-'))
   const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
   // The report is written to the invoking process's cwd, never into the
   // analyzed project, so spawn from a separate output directory.
-  const outputDir = mkdtempSync(path.join(tmpdir(), 'typescope-html-out-'))
+  const outputDir = mkdtempSync(path.join(tmpdir(), 'typehealth-html-out-'))
   try {
     const result = runCli(['scan', '--format', 'html', '--cwd', projectDir], outputDir)
     assert.equal(result.status, 0, `expected exit 0, stderr: ${result.stderr}`)
-    const reportPath = path.join(outputDir, 'typescope-report.html')
+    const reportPath = path.join(outputDir, 'typehealth-report.html')
     assert.ok(existsSync(reportPath), `expected report at ${reportPath}`)
     const html = readFileSync(reportPath, 'utf8')
     assert.ok(html.startsWith('<!doctype html>'))
     assert.ok(html.includes('&lt;'), 'expected escaped HTML entities in the report')
     assert.ok(!/<script/i.test(html), 'expected no <script> tag in the HTML report')
-    assert.ok(!html.includes('typescope-report.html</'), 'report must not be written into the analyzed project')
-    assert.ok(!existsSync(path.join(projectDir, 'typescope-report.html')))
+    assert.ok(!html.includes('typehealth-report.html</'), 'report must not be written into the analyzed project')
+    assert.ok(!existsSync(path.join(projectDir, 'typehealth-report.html')))
   } finally {
     rmSync(workspace, { recursive: true, force: true })
     rmSync(outputDir, { recursive: true, force: true })

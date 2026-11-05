@@ -1,7 +1,7 @@
 # Project Structure
 
 ```
-typescope/
+typehealth/
 ├── src/
 │   ├── index.ts              # public API surface (name, version)
 │   ├── cli/

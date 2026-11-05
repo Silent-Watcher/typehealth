@@ -1,6 +1,6 @@
 # Metric Definitions
 
-Exact, reproducible definitions of every metric TypeScope reports. These formulas are part of the tool's contract; changes are breaking changes for the JSON report schema.
+Exact, reproducible definitions of every metric TypeHealth reports. These formulas are part of the tool's contract; changes are breaking changes for the JSON report schema.
 
 ## Eligible positions
 

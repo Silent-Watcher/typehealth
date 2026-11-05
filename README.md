@@ -1,10 +1,10 @@
-# TypeScope
+# TypeHealth
 
-A lightweight TypeScript **type safety analyzer**. TypeScope analyzes your TypeScript project and shows you — in plain numbers, not vibes — how effectively the type system is actually being used.
+A lightweight TypeScript **type safety analyzer**. TypeHealth analyzes your TypeScript project and shows you — in plain numbers, not vibes — how effectively the type system is actually being used.
 
 ```text
 ╭──────────────────────╮
-│ TYPESCOPE            │
+│ TYPEHEALTH            │
 │ Type Safety Analyzer │
 ╰──────────────────────╯
 
@@ -37,9 +37,9 @@ TOP FINDINGS
 Analysis completed successfully.
 ```
 
-## Why TypeScope
+## Why TypeHealth
 
-Most tools count keywords. TypeScope answers questions you actually ask:
+Most tools count keywords. TypeHealth answers questions you actually ask:
 
 - **Where is type checking not happening?** Type coverage measures the share of eligible type positions that resolve to a real type — with the absolute position count shown, because a percentage without its denominator is meaningless.
 - **Where does `any` sneak in silently?** Explicit and implicit `any` are reported separately — a deliberate `any` is a decision; a silent one is an accident.
@@ -47,22 +47,22 @@ Most tools count keywords. TypeScope answers questions you actually ask:
 - **Where does untrusted data enter the program?** HTTP inputs, `JSON.parse` results, HTTP responses and queue payloads are reported as *potentially* unvalidated — clearly labeled uncertain, because static analysis cannot prove runtime safety.
 - **Is the compiler even helping?** Disabled strictness options are listed per project.
 
-Metrics are **independent** — no arbitrary composite score. Each has a documented formula: [Metric Definitions](https://typescope.dev/reference/metric-definitions).
+Metrics are **independent** — no arbitrary composite score. Each has a documented formula: [Metric Definitions](https://typehealth.dev/reference/metric-definitions).
 
 ## Features
 
-- 📊 **Type coverage** with per-file health ranking (worst files first)
-- 🔍 **Explicit / implicit `any`**, unsafe assertions, non-null assertions
-- 🚫 **Suppression detection** — `@ts-ignore`, `@ts-nocheck`, `@ts-expect-error`
-- 🌐 **Runtime boundary heuristics** for express/fastify/koa, fetch, JSON.parse, amqplib, KafkaJS, bullmq
-- ⚙️ **Strictness audit** of your tsconfig
-- 🖥️ **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
-- 📄 **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
-- 🌗 **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
-- 🚦 **CI-ready**: `--changed`, `--fail-under`, baseline ratcheting — [GitHub Actions recipe](https://typescope.dev/features/ci-integration)
-- 🔒 **Security-first**: analyzed code is never executed, file discovery is scoped to your project
-- ⚡ **Fast**: one shared TypeScript program, one AST walk per file — ~900 files/s
-- 📦 **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
+-  **Type coverage** with per-file health ranking (worst files first)
+-  **Explicit / implicit `any`**, unsafe assertions, non-null assertions
+-  **Suppression detection** — `@ts-ignore`, `@ts-nocheck`, `@ts-expect-error`
+-  **Runtime boundary heuristics** for express/fastify/koa, fetch, JSON.parse, amqplib, KafkaJS, bullmq
+-  **Strictness audit** of your tsconfig
+-  **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
+-  **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
+-  **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
+-  **CI-ready**: `--changed`, `--fail-under`, baseline ratcheting — [GitHub Actions recipe](https://typehealth.dev/features/ci-integration)
+-  **Security-first**: analyzed code is never executed, file discovery is scoped to your project
+-  **Fast**: one shared TypeScript program, one AST walk per file — ~900 files/s
+-  **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
 
 ## Requirements
 
@@ -73,40 +73,40 @@ Metrics are **independent** — no arbitrary composite score. Each has a documen
 The package is release-ready and awaiting npm publication (name and registry account are the remaining steps):
 
 ```sh
-npm install -D typescope   # once published
+npm install -D typehealth   # once published
 ```
 
 Until then, install from source or from the packed tarball:
 
 ```sh
 git clone <repository-url>
-cd typescope
+cd typehealth
 pnpm install
 pnpm run build
 node dist/cli/index.js scan
 
 # or test the packed tarball directly
 pnpm pack
-npm install ./typescope-0.1.0.tgz
+npm install ./typehealth-0.1.0.tgz
 ```
 
 ## Usage
 
 ```sh
-typescope scan                          # analyze current directory
-typescope scan --cwd ./my-project       # analyze another directory
-typescope scan --config ./tsconfig.json # explicit tsconfig
-typescope scan --changed origin/main    # only files changed vs a git ref
-typescope scan --fail-under 80          # CI: exit 1 below 80% coverage
-typescope scan --baseline base.json     # CI: exit 1 on regression
-typescope scan --no-color               # plain output
-typescope scan --help
-typescope --version
+typehealth scan                          # analyze current directory
+typehealth scan --cwd ./my-project       # analyze another directory
+typehealth scan --config ./tsconfig.json # explicit tsconfig
+typehealth scan --changed origin/main    # only files changed vs a git ref
+typehealth scan --fail-under 80          # CI: exit 1 below 80% coverage
+typehealth scan --baseline base.json     # CI: exit 1 on regression
+typehealth scan --no-color               # plain output
+typehealth scan --help
+typehealth --version
 ```
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--format <terminal\|json\|html>` | `terminal` | `json` → stdout, `html` → `typescope-report.html` in cwd |
+| `--format <terminal\|json\|html>` | `terminal` | `json` → stdout, `html` → `typehealth-report.html` in cwd |
 | `--cwd <path>` | `.` | Project directory |
 | `--config <path>` | `<cwd>/tsconfig.json` | tsconfig path |
 | `--changed [ref]` | off | Only files changed vs HEAD (+ untracked) or vs a git reference |
@@ -120,15 +120,15 @@ A `tsconfig.json` must be resolvable — via `--config` or in the directory tree
 
 ## Documentation
 
-Full documentation at **[typescope.dev](https://typescope.dev)** (built with VitePress, sources in [`docs/`](./docs)):
+Full documentation at **[typehealth.dev](https://typehealth.dev)** (built with VitePress, sources in [`docs/`](./docs)):
 
-- [Introduction](https://typescope.dev/guide/introduction) — what TypeScope measures and why
-- [CLI Reference](https://typescope.dev/guide/cli-reference) — every option and exit code
-- [Type Safety Metrics](https://typescope.dev/concepts/type-safety-metrics) — the measurement model
-- [Metric Definitions](https://typescope.dev/reference/metric-definitions) — exact formulas
-- [Terminal / JSON / HTML reports](https://typescope.dev/features/terminal-report) — output formats
-- [Runtime Boundaries](https://typescope.dev/concepts/runtime-boundaries) — what the boundary heuristics can and cannot tell you
-- [Security Model](https://typescope.dev/security/security-model) — the untrusted-input contract
+- [Introduction](https://typehealth.dev/guide/introduction) — what TypeHealth measures and why
+- [CLI Reference](https://typehealth.dev/guide/cli-reference) — every option and exit code
+- [Type Safety Metrics](https://typehealth.dev/concepts/type-safety-metrics) — the measurement model
+- [Metric Definitions](https://typehealth.dev/reference/metric-definitions) — exact formulas
+- [Terminal / JSON / HTML reports](https://typehealth.dev/features/terminal-report) — output formats
+- [Runtime Boundaries](https://typehealth.dev/concepts/runtime-boundaries) — what the boundary heuristics can and cannot tell you
+- [Security Model](https://typehealth.dev/security/security-model) — the untrusted-input contract
 
 ## Development
 
@@ -140,11 +140,11 @@ pnpm run typecheck    # tsc --noEmit, strict
 pnpm run docs:dev     # documentation dev server
 ```
 
-Architecture, testing conventions and performance notes: [Development docs](https://typescope.dev/development/architecture). Development progress is tracked openly in [`PROGRESS.md`](./PROGRESS.md).
+Architecture, testing conventions and performance notes: [Development docs](https://typehealth.dev/development/architecture). Development progress is tracked openly in [`PROGRESS.md`](./PROGRESS.md).
 
 ## Security
 
-TypeScope treats analyzed projects as untrusted input: your code is never executed, discovery never leaves your project directory, and all report content is escaped. Details: [Security Model](https://typescope.dev/security/security-model). Found a security issue? Please open a private security advisory instead of a public issue.
+TypeHealth treats analyzed projects as untrusted input: your code is never executed, discovery never leaves your project directory, and all report content is escaped. Details: [Security Model](https://typehealth.dev/security/security-model). Found a security issue? Please open a private security advisory instead of a public issue.
 
 ## License
 

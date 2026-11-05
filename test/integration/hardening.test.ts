@@ -17,7 +17,7 @@ import { analyzeProject, type AnalysisResult } from '../../src/core/analyzer.ts'
 import { renderHtmlReport } from '../../src/reports/html.ts'
 
 function makeProject(baseline: string, tsconfig: object, files: Record<string, string>): string {
-  const dir = mkdtempSync(path.join(baseline, 'typescope-harden-'))
+  const dir = mkdtempSync(path.join(baseline, 'typehealth-harden-'))
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify(tsconfig))
   for (const [name, contents] of Object.entries(files)) {
@@ -124,7 +124,7 @@ test('symlink to a file outside the project: scan completes and outside content 
   const dir = makeProject(tmpdir(), { compilerOptions: { strict: true }, include: ['src/*.ts'] }, {
     'src/inside.ts': 'export const inside: number = 1;\n',
   })
-  const outsideDir = mkdtempSync(path.join(tmpdir(), 'typescope-hardout-'))
+  const outsideDir = mkdtempSync(path.join(tmpdir(), 'typehealth-hardout-'))
   const outsideFile = path.join(outsideDir, 'evil.ts')
   writeFileSync(outsideFile, 'export const outside: any = 1;\n')
   symlinkSync(outsideFile, path.join(dir, 'src/link.ts'))

@@ -1,10 +1,10 @@
 # HTML Report
 
-`typescope scan --format html` writes a single self-contained HTML file and prints its path:
+`typehealth scan --format html` writes a single self-contained HTML file and prints its path:
 
 ```sh
-$ typescope scan --format html
-Report written to /home/you/typescope-report.html
+$ typehealth scan --format html
+Report written to /home/you/typehealth-report.html
 ```
 
 The report is written to the **invoking user's current working directory**, never into the analyzed project (unless that is where you run from — then it is the one file you asked for).
@@ -32,5 +32,5 @@ The analyzed project is untrusted input, and the HTML report renders its data. T
 Responsive via CSS grid/flex with a 960px max width — usable on laptops, tablets and CI artifact browsers. Dark GitHub-style palette.
 
 ::: tip
-Combine with CI: run `typescope scan --format html` in your pipeline and upload `typescope-report.html` as a build artifact. See [Exit Codes](/reference/exit-codes) for CI gating (full `--fail-under` support lands in Phase 9).
+Combine with CI: run `typehealth scan --format html` in your pipeline and upload `typehealth-report.html` as a build artifact. See [Exit Codes](/reference/exit-codes) for CI gating (full `--fail-under` support lands in Phase 9).
 :::

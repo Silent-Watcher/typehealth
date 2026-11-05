@@ -1,13 +1,13 @@
 # JSON Report
 
-`typescope scan --format json` prints a machine-readable report to stdout — deterministic, versioned and self-describing. Built for CI jobs, dashboards and diffing between runs.
+`typehealth scan --format json` prints a machine-readable report to stdout — deterministic, versioned and self-describing. Built for CI jobs, dashboards and diffing between runs.
 
 ## Schema (version 1)
 
 ```json
 {
   "schemaVersion": 1,
-  "tool": { "name": "typescope", "version": "0.1.0" },
+  "tool": { "name": "typehealth", "version": "0.1.0" },
   "project": {
     "directory": "/tmp/demo-api",
     "configPath": "/tmp/demo-api/tsconfig.json",

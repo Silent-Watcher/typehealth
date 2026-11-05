@@ -54,7 +54,7 @@ function makeGitProject(
   files: Record<string, string>,
   options: { initialCommit?: boolean; tsconfig?: object } = {},
 ): GitProject {
-  const dir = realpathSync(mkdtempSync(path.join(tmpdir(), 'typescope-git-')))
+  const dir = realpathSync(mkdtempSync(path.join(tmpdir(), 'typehealth-git-')))
   const tsconfig = options.tsconfig ?? { compilerOptions: { strict: true } }
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify(tsconfig))
@@ -306,7 +306,7 @@ test('--baseline rejects invalid baseline files with exit 2', () => {
 
 test('--baseline accepts an absolute path from a different spawning cwd', () => {
   const project = makeGitProject(ANY_PROJECT)
-  const outDir = mkdtempSync(path.join(tmpdir(), 'typescope-git-out-'))
+  const outDir = mkdtempSync(path.join(tmpdir(), 'typehealth-git-out-'))
   try {
     const baselinePath = path.join(project.dir, 'baseline.json')
     writeBaselineFile(project.dir, baselinePath)

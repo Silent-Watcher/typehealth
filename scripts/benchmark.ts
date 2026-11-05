@@ -38,7 +38,7 @@ if (!Number.isInteger(fileCount) || fileCount <= 0) {
   process.exit(2)
 }
 
-const dir = mkdtempSync(path.join(tmpdir(), 'typescope-bench-'))
+const dir = mkdtempSync(path.join(tmpdir(), 'typehealth-bench-'))
 try {
   mkdirSync(path.join(dir, 'src'), { recursive: true })
   writeFileSync(path.join(dir, 'tsconfig.json'), JSON.stringify({ compilerOptions: { strict: true, target: 'es2022' }, include: ['src/**/*.ts'] }))

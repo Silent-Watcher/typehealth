@@ -1,4 +1,4 @@
-# TypeScope Progress
+# TypeHealth Progress
 
 Single source of truth for development progress. Update after every meaningful milestone and at the end of every phase. Never mark a task complete unless implemented and verified.
 
@@ -10,7 +10,7 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Project Overview
 
-TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm package. It analyzes TypeScript projects and reports independent metrics: type coverage, explicit/implicit `any`, unsafe assertions, non-null assertions, suppressions, tsconfig strictness, runtime boundary risks. Output: terminal, JSON, HTML. Docs: VitePress. Stack: Node.js 22.18+, TypeScript (strict), tsdown, TypeScript Compiler API, Node native test runner, ESM-first.
+TypeHealth is a lightweight TypeScript type safety analyzer distributed as an npm package. It analyzes TypeScript projects and reports independent metrics: type coverage, explicit/implicit `any`, unsafe assertions, non-null assertions, suppressions, tsconfig strictness, runtime boundary risks. Output: terminal, JSON, HTML. Docs: VitePress. Stack: Node.js 22.18+, TypeScript (strict), tsdown, TypeScript Compiler API, Node native test runner, ESM-first.
 
 ## Phase Checklists
 
@@ -128,13 +128,13 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 ### Phase 10 — npm Release Preparation
 - [x] tsdown production build verified (ESM + .d.ts, shebang preserved on CLI entry)
 - [x] CLI executable + engine compatibility; library import verified against built output (dist/)
-- [x] npm pack: 20 KB tarball, contents exactly LICENSE + README + package.json + dist; clean-install test in fresh temp project (bin, `import('typescope')`, scan + HTML report)
+- [x] npm pack: 20 KB tarball, contents exactly LICENSE + README + package.json + dist; clean-install test in fresh temp project (bin, `import('typehealth')`, scan + HTML report)
 - [x] Tests against built output; publint: All good; attw: ESM-only findings accepted (node10 legacy n/a, CJS dynamic-import-only — ESM-first by design)
 - [x] VitePress production build; animated hero logo added (user request fulfilled), favicon wired
 - [x] LICENSE (MIT) added; `private: true` removed; keywords added (D26)
 - [x] Release checklist and docs complete (install instructions updated for publication)
 - [x] Commit phase
-- Remaining before actual `npm publish` (non-code): registry account, name availability check, real repository URL in package.json + README, decide typescope.dev domain (R8), git tag v0.1.0.
+- Remaining before actual `npm publish` (non-code): registry account, name availability check, real repository URL in package.json + README, decide typehealth.dev domain (R8), git tag v0.1.0.
 
 ## Completed Tasks
 See phase checklists above.

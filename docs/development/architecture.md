@@ -1,6 +1,6 @@
 # Architecture
 
-TypeScope is deliberately small. This page describes the actual structure and the reasoning behind it. For the metrics themselves see [Metric Definitions](/reference/metric-definitions).
+TypeHealth is deliberately small. This page describes the actual structure and the reasoning behind it. For the metrics themselves see [Metric Definitions](/reference/metric-definitions).
 
 ## Layering
 
@@ -30,7 +30,7 @@ Dependencies point one way: the CLI orchestrates, core analyzes, reports render.
 - **One AST walk per file** (plus a separate cheap pass for boundary heuristics). Coverage positions are collected during the walk and classified afterwards, because distinguishing explicit from implicit `any` needs the full set of `any` keywords. Rules that can be evaluated immediately run inline. Separate rule modules would force multiple traversals — deliberately not done.
 - **Independent metrics.** Metrics are computed and reported separately; no composite score exists.
 - **Deterministic output.** Findings are deduplicated by `file:line:column:rule` and sorted by (file, line, column, rule), so identical input produces identical reports.
-- **Established libraries for infrastructure.** commander for CLI parsing, tsdown for builds, the TypeScript Compiler API for analysis, native `node:util` styleText for colors. Custom code exists only for TypeScope-specific analysis and reporting.
+- **Established libraries for infrastructure.** commander for CLI parsing, tsdown for builds, the TypeScript Compiler API for analysis, native `node:util` styleText for colors. Custom code exists only for TypeHealth-specific analysis and reporting.
 
 ## Error taxonomy
 
