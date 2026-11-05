@@ -4,6 +4,8 @@ import { statSync, writeFileSync } from 'node:fs'
 import type { ScanRequest } from '../types.ts'
 import { loadProject } from '../../core/project.ts'
 import { analyzeProject } from '../../core/analyzer.ts'
+import { getChangedFiles } from '../../core/git.ts'
+import { compareBaseline, loadBaseline } from '../../core/baseline.ts'
 import { renderTerminalReport } from '../../reports/terminal.ts'
 import { serializeJsonReport } from '../../reports/json.ts'
 import { renderHtmlReport } from '../../reports/html.ts'
@@ -32,13 +34,47 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
     return 2
   }
 
-  const analysis = analyzeProject(result)
+  let scoped = result
+  let changedFiles: number | undefined
+  if (request.changed !== undefined) {
+    const ref = typeof request.changed === 'string' ? request.changed : undefined
+    const changed = getChangedFiles(result.projectDir, ref)
+    if (!changed.ok) {
+      console.error(`typescope: ${changed.message}`)
+      return 2
+    }
+    const changedSet = new Set(changed.files)
+    scoped = { ...result, fileNames: result.fileNames.filter((f) => changedSet.has(f)) }
+    changedFiles = scoped.fileNames.length
+  }
+  const discoveredFiles = result.fileNames.length
+
+  const analysis = analyzeProject(scoped)
+
+  // CI gating: exit 1 on threshold miss or baseline regression, in any format.
+  let exitCode = 0
+  let baselineComparison: ReturnType<typeof compareBaseline> | undefined
+  if (request.baseline !== undefined) {
+    const baseline = loadBaseline(request.baseline)
+    if (!baseline.ok) {
+      console.error(`typescope: ${baseline.message}`)
+      return 2
+    }
+    baselineComparison = compareBaseline(baseline.data, analysis)
+    if (baselineComparison.regressed) exitCode = 1
+  }
+  if (request.failUnder !== undefined) {
+    const coverage = analysis.project.typeCoverage
+    if (coverage !== null && coverage * 100 < request.failUnder) {
+      exitCode = 1
+    }
+  }
   const color = request.color && supportsColor(stdout)
   const input = { analysis, projectDir: result.projectDir, configPath: result.configPath }
 
   if (request.format === 'json') {
     stdout.write(serializeJsonReport(input))
-    return 0
+    return exitCode
   }
 
   if (request.format === 'html') {
@@ -51,11 +87,23 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
       return 2
     }
     stdout.write(`Report written to ${outputPath}\n`)
-    return 0
+    return exitCode
   }
 
-  stdout.write(renderTerminalReport(analysis, { projectDir: result.projectDir, configPath: result.configPath }, color))
-  return 0
+  stdout.write(
+    renderTerminalReport(
+      analysis,
+      {
+        projectDir: result.projectDir,
+        configPath: result.configPath,
+        changedFiles,
+        discoveredFiles,
+        baseline: baselineComparison,
+      },
+      color,
+    ),
+  )
+  return exitCode
 }
 
 function isDirectory(p: string): boolean {

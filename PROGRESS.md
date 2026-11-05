@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 8 — Performance and Security Hardening (complete)
-- Completed Phases: 8/10
+- Current Phase: Phase 9 — Git and CI Integration (complete)
+- Completed Phases: 9/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -115,12 +115,15 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Commit phase
 
 ### Phase 9 — Git and CI Integration
-- [ ] --fail-under, --changed, baseline comparison
-- [ ] Coverage regression and finding comparison
-- [ ] Git reference validation, CI exit codes
-- [ ] Integration tests with temporary repositories
-- [ ] GitHub Actions docs
-- [ ] Commit phase
+- [x] --fail-under (0–100, validated; empty projects pass; all formats; exit 1)
+- [x] --changed [ref] (git diff vs HEAD + untracked, or vs validated reference; realpath canonicalized; exit 2 with actionable errors: invalid ref, no commits, not a repo)
+- [x] Baseline comparison (--baseline accepts a previous JSON report; schemaVersion validated; coverage delta + new/resolved findings; regression → exit 1)
+- [x] Coverage regression and finding comparison (compareBaseline, keyed file:line:column:rule)
+- [x] Git reference validation, CI exit codes (0 pass / 1 gate / 2 usage — exit-codes docs updated)
+- [x] Integration tests with temporary repositories (15 tests by subagent, re-verified)
+- [x] GitHub Actions documented (features/ci-integration.md with merge-base recipe + artifact upload)
+- [x] Commit phase
+- Subagent-found bug fixed: git output was resolved against process cwd instead of repo root (silent no-op as a library); Changed line now shows scoped/total-discovered correctly.
 
 ### Phase 10 — npm Release Preparation
 - [ ] tsdown production build verified, ESM exports, declaration files
@@ -172,4 +175,4 @@ Phase 1 (starts after explicit approval).
 - TODO (user-requested, end of development / Phase 10): add a cool logo (animated if feasible) to the right side of the VitePress landing hero.
 
 ## Last Completed Checks
-- Phase 8: typecheck ✓, 95/95 tests ✓ (6 hardening regression tests by subagent, re-verified), build ✓, docs:build ✓, benchmark re-run after changes: 505 files/s (no regression).
+- Phase 9: typecheck ✓, 110/110 tests ✓ (15 new git/CI tests on real temp repos; subagent-written, re-verified), build ✓, docs:build ✓, CLI smoke ✓ (fail-under gate exit 1, invalid ref exit 2, baseline 0.00pp on identical input, --changed scoped analysis).

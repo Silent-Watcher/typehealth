@@ -2,7 +2,7 @@
 import { realpathSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import { Command, CommanderError, Option } from 'commander'
+import { Command, CommanderError, InvalidArgumentError, Option } from 'commander'
 
 import { runScan } from './commands/scan.ts'
 import { name, version } from '../index.ts'
@@ -26,6 +26,15 @@ export function main(argv: readonly string[], stdout = process.stdout): number {
     )
     .option('--cwd <path>', 'Project directory to analyze', '.')
     .option('--config <path>', 'Path to tsconfig.json')
+    .option('--changed [ref]', 'Analyze only files changed vs HEAD (or vs the given git reference)')
+    .option('--fail-under <percent>', 'Exit 1 when type coverage is below this percentage (0-100)', (value: string): number => {
+      const n = Number(value)
+      if (!Number.isFinite(n) || n < 0 || n > 100) {
+        throw new InvalidArgumentError('--fail-under must be a number between 0 and 100')
+      }
+      return n
+    })
+    .option('--baseline <path>', 'Compare against a previous JSON report; exit 1 on regression')
     .option('--no-color', 'Disable colored output')
     .action((opts) => {
       exitCode = runScan(opts, stdout)

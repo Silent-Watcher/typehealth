@@ -59,11 +59,10 @@ Metrics are **independent** — no arbitrary composite score. Each has a documen
 - 🖥️ **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
 - 📄 **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
 - 🌗 **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
+- 🚦 **CI-ready**: `--changed`, `--fail-under`, baseline ratcheting — [GitHub Actions recipe](https://typescope.dev/features/ci-integration)
 - 🔒 **Security-first**: analyzed code is never executed, file discovery is scoped to your project
-- ⚡ **Fast**: one shared TypeScript program, one AST walk per file
+- ⚡ **Fast**: one shared TypeScript program, one AST walk per file — ~900 files/s
 - 📦 **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
-
-Planned: `--fail-under` and CI baseline comparison (Phase 9).
 
 ## Requirements
 
@@ -87,6 +86,9 @@ node dist/cli/index.js scan
 typescope scan                          # analyze current directory
 typescope scan --cwd ./my-project       # analyze another directory
 typescope scan --config ./tsconfig.json # explicit tsconfig
+typescope scan --changed origin/main    # only files changed vs a git ref
+typescope scan --fail-under 80          # CI: exit 1 below 80% coverage
+typescope scan --baseline base.json     # CI: exit 1 on regression
 typescope scan --no-color               # plain output
 typescope scan --help
 typescope --version
@@ -97,9 +99,12 @@ typescope --version
 | `--format <terminal\|json\|html>` | `terminal` | `json` → stdout, `html` → `typescope-report.html` in cwd |
 | `--cwd <path>` | `.` | Project directory |
 | `--config <path>` | `<cwd>/tsconfig.json` | tsconfig path |
+| `--changed [ref]` | off | Only files changed vs HEAD (+ untracked) or vs a git reference |
+| `--fail-under <pct>` | off | Exit 1 when coverage is below the percentage |
+| `--baseline <path>` | off | Exit 1 when coverage drops or new findings appear vs a previous JSON report |
 | `--no-color` | off | Disable colors (also automatic in CI / with `NO_COLOR`) |
 
-**Exit codes:** `0` success · `1` unexpected error (a bug) · `2` usage/config error.
+**Exit codes:** `0` pass · `1` gate failure (`--fail-under`/`--baseline`) · `2` usage/config error.
 
 A `tsconfig.json` must be resolvable — via `--config` or in the directory tree. Discovery honors your `include`/`exclude` and additionally skips `node_modules`, `dist`, `build`, `coverage` and `*.d.ts`.
 

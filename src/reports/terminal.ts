@@ -1,10 +1,17 @@
 import type { AnalysisResult, FileMetrics } from '../core/analyzer.ts'
+import type { BaselineComparison } from '../core/baseline.ts'
 import type { Finding, Severity } from '../core/findings.ts'
 import { colorize, progressBar, type ColorName } from '../utils/colors.ts'
 
 export interface ReportInfo {
   projectDir: string
   configPath: string
+  /** Number of files analyzed because of --changed. */
+  changedFiles?: number
+  /** Total files discovered before --changed scoping (for the Changed line). */
+  discoveredFiles?: number
+  /** Result of --baseline comparison, when given. */
+  baseline?: BaselineComparison
 }
 
 const SEVERITY_RANK: Record<Severity, number> = {
@@ -39,6 +46,9 @@ export function renderTerminalReport(analysis: AnalysisResult, info: ReportInfo,
 
   lines.push(`${c('Project', 'cyan')}  ${info.projectDir}`)
   lines.push(`${c('Config', 'cyan')}   ${info.configPath}`)
+  if (info.changedFiles !== undefined) {
+    lines.push(`${c('Changed', 'cyan')}   ${info.changedFiles} (of ${info.discoveredFiles ?? analysis.project.files} discovered)`)
+  }
   lines.push(`${c('Files', 'cyan')}    ${analysis.project.files}`)
   lines.push(`${c('Duration', 'cyan')} ${(analysis.durationMs / 1000).toFixed(2)}s`)
   lines.push('')
@@ -89,6 +99,21 @@ export function renderTerminalReport(analysis: AnalysisResult, info: ReportInfo,
     for (const finding of top) {
       const tag = `[${finding.severity.toUpperCase()}]`
       lines.push(`  ${c(tag, SEVERITY_COLOR[finding.severity])} ${finding.file}:${finding.line} ${finding.message}`)
+    }
+    lines.push('')
+  }
+
+  // Baseline comparison
+  if (info.baseline !== undefined) {
+    const b = info.baseline
+    lines.push(c('BASELINE', 'bold'))
+    const deltaText = b.coverageDelta === null ? 'n/a' : `${b.coverageDelta > 0 ? '+' : ''}${b.coverageDelta.toFixed(2)} pp`
+    lines.push(`  ${c('Coverage', 'cyan')} ${colorize(b.coverageDelta === null ? '—' : `${(b.coverageBefore! * 100).toFixed(1)}% → ${(b.coverageAfter! * 100).toFixed(1)}%`, b.coverageDelta !== null && b.coverageDelta < 0 ? 'red' : 'green', color)} ${c(`(${deltaText})`, 'gray')}`)
+    const newCount = b.newFindings.length
+    lines.push(`  ${c('New findings', 'cyan')}      ${newCount === 0 ? colorize('0', 'gray', color) : colorize(String(newCount), 'red', color)}`)
+    lines.push(`  ${c('Resolved findings', 'cyan')}  ${b.resolvedFindings}`)
+    if (b.regressed) {
+      lines.push(`  ${c('Regression detected: coverage dropped or new findings appeared.', 'red')}`)
     }
     lines.push('')
   }

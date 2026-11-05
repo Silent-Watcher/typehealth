@@ -38,6 +38,7 @@ export default defineConfig({
             { text: 'Terminal Report', link: '/features/terminal-report' },
             { text: 'JSON Report', link: '/features/json-report' },
             { text: 'HTML Report', link: '/features/html-report' },
+            { text: 'CI Integration', link: '/features/ci-integration' },
           ],
         },
       ],

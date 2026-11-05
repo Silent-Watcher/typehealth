@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 8 — Performance and Security Hardening (complete)
+Phase 9 — Git and CI Integration (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -41,3 +41,4 @@ Phase 8 — Performance and Security Hardening (complete)
 - 2026-11-05 Phase 6 (terminal-report tests delegated to subagent, re-verified): typecheck ✓, 69/69 tests ✓, build ✓, docs:build ✓; suppression heuristic tightened (D22); docs expansion + README.
 - 2026-11-05 Phase 7 (report tests delegated to subagent, re-verified): typecheck ✓, 89/89 tests ✓, build ✓, docs:build ✓; subagent caught missing eligiblePositions/typedPositions definitions in METRIC_DEFINITIONS and a stale html test — both fixed before commit.
 - 2026-11-05 Phase 8: benchmark baseline recorded (902 files/s @ 1000 files); large-file guard, realpath symlink handling, file-unreadable surfacing implemented; 6 hardening regression tests by subagent, re-verified: 95/95 ✓, build ✓, docs:build ✓, re-benchmark 505 files/s (no regression).
+- 2026-11-05 Phase 9: --fail-under / --changed / --baseline implemented; git-output-vs-cwd bug fixed (subagent catch); 15 temp-repo tests by subagent, re-verified: 110/110 ✓, build ✓, docs:build ✓.
