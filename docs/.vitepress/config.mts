@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'TypeScope',
+  title: 'TypeHealth',
   description: 'Lightweight TypeScript type safety analyzer',
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
     themeConfig: {
