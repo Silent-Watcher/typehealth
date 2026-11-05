@@ -54,6 +54,7 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
   console.log(`${colorize('Unsafe assertions', 'cyan', color)}   ${analysis.project.unsafeAssertions}`)
   console.log(`${colorize('Non-null assertions', 'cyan', color)} ${analysis.project.nonNullAssertions}`)
   console.log(`${colorize('Suppressions', 'cyan', color)}        ${analysis.project.suppressions}`)
+  console.log(`${colorize('Unvalidated boundaries', 'cyan', color)} ${analysis.project.runtimeBoundaries}`)
   console.log(`${colorize('Weak strictness flags', 'cyan', color)} ${analysis.project.weakStrictnessFlags}`)
   console.log(`${colorize('Findings', 'cyan', color)}            ${analysis.findings.length}`)
   console.log(`${colorize('Duration', 'cyan', color)}            ${(analysis.durationMs / 1000).toFixed(2)}s`)

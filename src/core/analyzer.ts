@@ -3,6 +3,7 @@ import ts from 'typescript'
 import type { LoadedProject } from './project.ts'
 import { normalizeFindings, type Finding } from './findings.ts'
 import { scanSuppressions } from './suppressions.ts'
+import { findBoundaryFindings } from './boundaries.ts'
 
 export interface FileMetrics {
   file: string
@@ -15,6 +16,8 @@ export interface FileMetrics {
   unsafeAssertions: number
   nonNullAssertions: number
   suppressions: number
+  /** Potentially unvalidated external data boundaries (heuristic, uncertain). */
+  runtimeBoundaries: number
 }
 
 export interface ProjectMetrics {
@@ -26,6 +29,7 @@ export interface ProjectMetrics {
   unsafeAssertions: number
   nonNullAssertions: number
   suppressions: number
+  runtimeBoundaries: number
   files: number
   /** Number of well-known strictness compiler options not enabled. */
   weakStrictnessFlags: number
@@ -101,6 +105,7 @@ export function analyzeProject(project: LoadedProject): AnalysisResult {
       unsafeAssertions: acc.unsafeAssertions + f.unsafeAssertions,
       nonNullAssertions: acc.nonNullAssertions + f.nonNullAssertions,
       suppressions: acc.suppressions + f.suppressions,
+      runtimeBoundaries: acc.runtimeBoundaries + f.runtimeBoundaries,
       files: acc.files + 1,
       weakStrictnessFlags: weak.length,
     }),
@@ -113,6 +118,7 @@ export function analyzeProject(project: LoadedProject): AnalysisResult {
       unsafeAssertions: 0,
       nonNullAssertions: 0,
       suppressions: 0,
+      runtimeBoundaries: 0,
       files: 0,
       weakStrictnessFlags: weak.length,
     },
@@ -141,6 +147,7 @@ function analyzeFile(
     unsafeAssertions: 0,
     nonNullAssertions: 0,
     suppressions: 0,
+    runtimeBoundaries: 0,
   }
 
   for (const diagnostic of program.getSyntacticDiagnostics(sourceFile)) {
@@ -166,6 +173,10 @@ function analyzeFile(
       message: `Type suppression comment: @${suppression.kind}.`,
     })
   }
+
+  const boundaryFindings = findBoundaryFindings(sourceFile)
+  metrics.runtimeBoundaries = boundaryFindings.length
+  findings.push(...boundaryFindings)
 
   // Single AST walk. Coverage positions are collected here and classified
   // afterwards (needs the full set of `any` keywords to tell explicit from

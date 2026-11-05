@@ -13,6 +13,7 @@ A single percentage hides what matters. A project can have high type coverage an
 - **Non-null assertions** — uses of the `!` operator.
 - **Suppressions** — `@ts-ignore`, `@ts-nocheck`, `@ts-expect-error` comments.
 - **Strictness configuration** — disabled compiler strictness options.
+- **Unvalidated boundaries** — external data entry points (HTTP, queues, `JSON.parse`) without a recognized validation step; heuristic and labeled uncertain, see [Runtime Boundaries](/concepts/runtime-boundaries).
 
 ## How to read them
 

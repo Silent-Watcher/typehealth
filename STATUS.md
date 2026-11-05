@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 4 — Core Type Safety Analyzer (complete)
+Phase 5 — Runtime Boundary Analysis (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -24,6 +24,7 @@ Phase 4 — Core Type Safety Analyzer (complete)
 - R4: npm allowScripts policy blocks esbuild postinstall; VitePress verified working without it. Monitor.
 - R5: Empty-project edge — resolved: tsconfig error 18003 now treated as empty project (D17).
 - R6: `isTypeAssignableTo` used for unrelated-type assertions is a heavier checker call; watch in Phase 8 benchmarks.
+- R7: boundary heuristics are name-based (req/request/ctx, validator method names); false positives/negatives expected and documented. Revisit real-framework behavior (express/amqplib fixtures) if users report noise.
 
 ## Verification Log
 - 2026-11-05: environment inspected, planning docs created, planning commit `de75e75`.
@@ -31,3 +32,4 @@ Phase 4 — Core Type Safety Analyzer (complete)
 - 2026-11-05 Phase 2 (pnpm 12.10.1): build ✓, typecheck ✓, 22/22 tests ✓, docs:build ✓, built CLI verified.
 - 2026-11-05 Phase 3 (+ third-party policy: commander, picocolors→later replaced, typescript→runtime dep): typecheck ✓, 23/23 tests ✓, build ✓, docs:build ✓, discovery smoke ✓.
 - 2026-11-05 Phase 4 (+ colors→node:util styleText): typecheck ✓, 35/35 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (99.7% coverage, 332 positions, 0.53s).
+- 2026-11-05 Phase 5 (boundary tests delegated to subagent, re-verified): typecheck ✓, 47/47 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (0 boundaries in this repo).

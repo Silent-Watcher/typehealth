@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 4 — Core Type Safety Analyzer (complete)
-- Completed Phases: 4/10
+- Current Phase: Phase 5 — Runtime Boundary Analysis (complete)
+- Completed Phases: 5/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -76,14 +76,14 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Commit phase
 
 ### Phase 5 — Runtime Boundary Analysis
-- [ ] HTTP request input / query / route parameter detection
-- [ ] JSON.parse result detection
-- [ ] External HTTP response detection
-- [ ] Queue consumer payload detection
-- [ ] Recognition of runtime validation patterns (zod etc.)
-- [ ] Uncertain findings labeled; no full taint analysis
-- [ ] Limitations documented; tests added
-- [ ] Commit phase
+- [x] HTTP request input / query / route parameter detection (req/request/ctx .body/.query/.params, grouped per access pattern)
+- [x] JSON.parse result detection
+- [x] External HTTP response detection (fetch, .json()/.text())
+- [x] Queue consumer payload detection (consume, eachMessage/eachBatch, new Worker)
+- [x] Recognition of runtime validation patterns (parse/safeParse/validate/decode/etc. — zod, valibot, yup, joi, ajv, class-validator, io-ts, effect/schema; direct arg or same-file variable)
+- [x] Uncertain findings labeled (severity medium, message contains "uncertain"); no taint analysis
+- [x] Limitations documented (docs/concepts/runtime-boundaries.md); tests added (12)
+- [x] Commit phase
 
 ### Phase 6 — Terminal Reporting UI
 - [ ] Header, project info, colored progress bars, percentages
@@ -155,6 +155,8 @@ Phase 1 (starts after explicit approval).
 - D16: one AST walk per file over a shared ts.Program. Coverage positions are collected during the walk and classified afterwards (explicit-vs-implicit any needs the full `any` keyword set); finding rules evaluate inline. No rules/ directory — separate rule modules would force multiple traversals.
 - D17: tsconfig "no inputs" error (18003) treated as an empty project, not a config error. Resolves R5.
 - D18: typescript must be a runtime dependency (D12) — confirmed during Phase 4.
+- D19: boundary detection is a separate AST pass per file (src/core/boundaries.ts), name-based heuristics, no taint analysis. fetch()+.json() each report separately; request-data access grouped per root.prop to avoid flooding. Deliberately simple, documented as uncertain.
+- D20: test suites for new modules are delegated to subagents (user preference); results independently re-verified in the main session before commit.
 
 ## Last Completed Checks
-- Phase 4: typecheck ✓, 35/35 tests ✓ (12 new analyzer integration tests incl. severity mapping, string-literal suppression false positive, dedupe/order, empty project, syntax errors), build ✓, docs:build ✓, self-scan smoke ✓ (this repo: 99.7% coverage, 332 positions, 4 findings, 0.53s).
+- Phase 5: typecheck ✓, 47/47 tests ✓ (12 new boundary tests written by subagent, re-verified independently), build ✓, docs:build ✓, self-scan smoke ✓ (0 boundaries in this repo — correct, no HTTP/queue code).

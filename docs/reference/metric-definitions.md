@@ -51,6 +51,10 @@ Every use of the postfix `!` operator (one count and one low-severity finding ea
 
 Every `@ts-ignore` (medium), `@ts-nocheck` (high) and `@ts-expect-error` (low) comment found in analyzed source files. Matches outside comments are ignored. `@ts-expect-error` is reported deliberately: it is compile-checked, but still suppresses type information.
 
+## Unvalidated boundaries
+
+Project-level count of `unvalidated-boundary` findings: static heuristic detections of external data (JSON.parse results, request data, HTTP responses, queue payloads) without a recognized validation step. Every finding is **uncertain by definition** — see [Runtime Boundaries](/concepts/runtime-boundaries) for the recognized patterns and their limitations. Severity: medium. A JSON.parse assignment may also appear in the implicit-any metric; the two findings describe different concerns (type vs runtime validation).
+
 ## Weak strictness flags
 
 Project-level count of the following compiler options that are not effectively enabled: `strict`, `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, `strictBindCallApply`, `strictPropertyInitialization`, `noImplicitThis`, `alwaysStrict`, `useUnknownInCatchVariables`. Enabling `strict` enables the sub-flags unless they are explicitly set to `false`. Reported as one `weak-strictness` finding against the tsconfig (medium when any flag is disabled, otherwise info).

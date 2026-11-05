@@ -25,6 +25,7 @@ export default defineConfig({
           items: [
             { text: 'Analysis Engine', link: '/concepts/analysis-engine' },
             { text: 'Type Safety Metrics', link: '/concepts/type-safety-metrics' },
+            { text: 'Runtime Boundaries', link: '/concepts/runtime-boundaries' },
           ],
         },
       ],
