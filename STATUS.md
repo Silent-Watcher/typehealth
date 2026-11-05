@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 9 — Git and CI Integration (complete)
+All 10 phases complete — release-ready, publication pending (see PROGRESS.md Phase 10 for the remaining non-code steps).
 
 ## Environment
 | Item | Value | Notes |

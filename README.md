@@ -70,7 +70,13 @@ Metrics are **independent** — no arbitrary composite score. Each has a documen
 
 ## Install
 
-The npm package is not published yet (development in progress). Until then:
+The package is release-ready and awaiting npm publication (name and registry account are the remaining steps):
+
+```sh
+npm install -D typescope   # once published
+```
+
+Until then, install from source or from the packed tarball:
 
 ```sh
 git clone <repository-url>
@@ -78,6 +84,10 @@ cd typescope
 pnpm install
 pnpm run build
 node dist/cli/index.js scan
+
+# or test the packed tarball directly
+pnpm pack
+npm install ./typescope-0.1.0.tgz
 ```
 
 ## Usage

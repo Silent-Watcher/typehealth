@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="TypeScope logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a2233"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="arc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3fb950"/>
+      <stop offset="1" stop-color="#58a6ff"/>
+    </linearGradient>
+    <linearGradient id="scan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#58a6ff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#58a6ff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#58a6ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="url(#bg)" stroke="#30363d" stroke-width="2"/>
+
+  <!-- coverage ring: track + animated 80% arc -->
+  <circle cx="64" cy="64" r="44" fill="none" stroke="#21262d" stroke-width="8"/>
+  <circle cx="64" cy="64" r="44" fill="none" stroke="url(#arc)" stroke-width="8" stroke-linecap="round"
+          stroke-dasharray="221.2 276.5" transform="rotate(-90 64 64)">
+    <animate attributeName="stroke-dasharray" from="0 276.5" to="221.2 276.5" dur="1.6s" begin="0s" fill="freeze"/>
+  </circle>
+
+  <!-- TS monogram -->
+  <text x="64" y="78" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+        font-size="42" font-weight="700" fill="#e6edf3">TS</text>
+
+  <!-- scanning line sweeping the tile -->
+  <rect x="10" y="4" width="108" height="22" fill="url(#scan)">
+    <animate attributeName="y" values="4;106;4" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values=".9;.9;.25" keyTimes="0;.5;1" dur="2s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- finding dot pulsing on the ring -->
+  <circle cx="93" cy="35" r="5" fill="#d29922">
+    <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;.6;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

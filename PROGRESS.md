@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 9 — Git and CI Integration (complete)
-- Completed Phases: 9/10
+- Current Phase: Phase 10 — npm Release Preparation (complete) — ALL PHASES DONE
+- Completed Phases: 10/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -126,13 +126,15 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - Subagent-found bug fixed: git output was resolved against process cwd instead of repo root (silent no-op as a library); Changed line now shows scoped/total-discovered correctly.
 
 ### Phase 10 — npm Release Preparation
-- [ ] tsdown production build verified, ESM exports, declaration files
-- [ ] CLI executable and engine compatibility verified
-- [ ] npm pack + clean-install test in temporary project
-- [ ] Tests against built output; publint / Are The Types Wrong
-- [ ] VitePress production build
-- [ ] Release checklist and docs complete
-- [ ] Commit phase
+- [x] tsdown production build verified (ESM + .d.ts, shebang preserved on CLI entry)
+- [x] CLI executable + engine compatibility; library import verified against built output (dist/)
+- [x] npm pack: 20 KB tarball, contents exactly LICENSE + README + package.json + dist; clean-install test in fresh temp project (bin, `import('typescope')`, scan + HTML report)
+- [x] Tests against built output; publint: All good; attw: ESM-only findings accepted (node10 legacy n/a, CJS dynamic-import-only — ESM-first by design)
+- [x] VitePress production build; animated hero logo added (user request fulfilled), favicon wired
+- [x] LICENSE (MIT) added; `private: true` removed; keywords added (D26)
+- [x] Release checklist and docs complete (install instructions updated for publication)
+- [x] Commit phase
+- Remaining before actual `npm publish` (non-code): registry account, name availability check, real repository URL in package.json + README, decide typescope.dev domain (R8), git tag v0.1.0.
 
 ## Completed Tasks
 See phase checklists above.
@@ -169,10 +171,11 @@ Phase 1 (starts after explicit approval).
 - D23: no performance optimization in Phase 8 — benchmark showed ~900 files/s / 1.1 s for 1000 files; caching/parallelism unjustified. scripts/benchmark.ts is the regression harness.
 - D24: discovery canonicalizes with realpath: each real file analyzed once; symlink targets outside the project are excluded (in-project link path cannot smuggle outside content); broken symlinks reported.
 - D25: files listed by tsconfig that TypeScript cannot read surface as file-unreadable info findings — nothing silently dropped.
+- D26: `private` removed and package made publishable in Phase 10; actual `npm publish` deliberately left to the user (registry account, name check, real repo URL).
 
 ## Community Docs
 - Expanded per user request (docs are a first-class deliverable): features/terminal-report.md (real example output), development/architecture.md, development/project-structure.md, development/testing.md, development/performance.md, security/security-model.md. README.md written (comprehensive).
 - TODO (user-requested, end of development / Phase 10): add a cool logo (animated if feasible) to the right side of the VitePress landing hero.
 
 ## Last Completed Checks
-- Phase 9: typecheck ✓, 110/110 tests ✓ (15 new git/CI tests on real temp repos; subagent-written, re-verified), build ✓, docs:build ✓, CLI smoke ✓ (fail-under gate exit 1, invalid ref exit 2, baseline 0.00pp on identical input, --changed scoped analysis).
+- Phase 10 (final): build ✓, typecheck ✓, 110/110 tests ✓, docs:build ✓ (animated hero logo rendering), npm pack ✓ (20 KB), clean-install ✓ (bin + API + scan + HTML in a fresh project), publint clean, attw findings accepted as ESM-only semantics.
