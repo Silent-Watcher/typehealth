@@ -20,6 +20,7 @@ TypeScope analyzes untrusted code. The rules below are the project's security co
 
 ## Current limitations
 
-- Symlink traversal is on the Phase 8 hardening list; today, discovery follows the tsconfig's own resolution.
-- Excessively large source files have no size guard yet (Phase 8).
+- **Symlinks**: every candidate file is canonicalized with `realpath`. Each real file is analyzed exactly once (symlink + target → one entry), and a symlink whose target resolves outside the project directory is skipped with an info-level finding — the in-project link path cannot smuggle outside content into the scan. Symlinked *directory cycles* are handled by the TypeScript resolver, not by TypeScope.
+- **Large files**: files above 4 MB are skipped with an info-level finding ([why](/development/performance)) — they are typically generated code. Everything smaller is fully analyzed.
+- **Read failures**: a file listed by the tsconfig that TypeScript cannot read (e.g. permissions) surfaces as an info-level `file-unreadable` finding; the scan completes instead of crashing. Nothing disappears from a report silently.
 - See [Runtime Boundaries](/concepts/runtime-boundaries) for why boundary findings are advisory heuristics, never security verdicts.

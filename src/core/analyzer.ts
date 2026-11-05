@@ -82,6 +82,24 @@ export function analyzeProject(project: LoadedProject): AnalysisResult {
   }
   files.sort((a, b) => a.file.localeCompare(b.file))
 
+  // Files excluded before analysis are reported, not silently dropped.
+  for (const skipped of project.skippedFiles) {
+    const message =
+      skipped.reason === 'too-large'
+        ? 'File exceeds the size limit and was not analyzed (typically generated code).'
+        : skipped.reason === 'outside-scope'
+          ? 'Symlink target is outside the project directory; file was not analyzed.'
+          : 'File could not be resolved; it was not analyzed.'
+    findings.push({
+      file: skipped.file,
+      line: 1,
+      column: 1,
+      rule: 'file-skipped',
+      severity: 'info',
+      message,
+    })
+  }
+
   const weak = disabledStrictnessFlags(project.compilerOptions)
   findings.push({
     file: project.configPath,
@@ -94,6 +112,22 @@ export function analyzeProject(project: LoadedProject): AnalysisResult {
         ? 'All supported strictness compiler options are enabled.'
         : `Disabled strictness options: ${weak.join(', ')}.`,
   })
+
+  // A listed file that produced no metrics means TypeScript could not read it
+  // (e.g. permission denied) — surface it instead of dropping it silently.
+  const produced = new Set(files.map((f) => f.file))
+  for (const expected of project.fileNames) {
+    if (!produced.has(expected)) {
+      findings.push({
+        file: expected,
+        line: 1,
+        column: 1,
+        rule: 'file-unreadable',
+        severity: 'info',
+        message: 'File could not be read and was not analyzed.',
+      })
+    }
+  }
 
   const totals = files.reduce<ProjectMetrics>(
     (acc, f) => ({

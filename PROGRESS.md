@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 7 — JSON and HTML Reports (complete)
-- Completed Phases: 7/10
+- Current Phase: Phase 8 — Performance and Security Hardening (complete)
+- Completed Phases: 8/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -104,13 +104,15 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - Note: html report is written to the invoking user's cwd (documented); remediation suggestions in finding details deferred until richer rule messages exist (Phase 8/9 candidates).
 
 ### Phase 8 — Performance and Security Hardening
-- [ ] Benchmark first; document results before optimizing
-- [ ] AST traversal / Program reuse / memory review
-- [ ] File discovery, large source file handling
-- [ ] Symlinks, path traversal, HTML injection, error handling review
-- [ ] Security regression tests
-- [ ] No speculative optimization
-- [ ] Commit phase
+- [x] Benchmark first (scripts/benchmark.ts): 300 files → 627 ms; 1000 files → 1108 ms, ~902 files/s. Verdict: no optimization — nothing measured as slow (D23)
+- [x] AST traversal / Program reuse review: single shared Program + single walk confirmed adequate at 1000-file scale
+- [x] Large source file guard: files > 4 MB skipped pre-parse with info finding (file-skipped)
+- [x] Symlinks: realpath canonicalization — dedupe (analyzed once), out-of-scope targets excluded with finding, broken symlinks reported (D24)
+- [x] Unreadable files surfaced (file-unreadable info finding) instead of silently dropped (D25)
+- [x] Path traversal (scope filter), HTML injection (escapeHtml, hostile filenames + hostile tsconfig), error handling: regression tests added (6 by subagent)
+- [x] Security regression tests (test/integration/hardening.test.ts)
+- [x] No speculative optimization
+- [x] Commit phase
 
 ### Phase 9 — Git and CI Integration
 - [ ] --fail-under, --changed, baseline comparison
@@ -161,10 +163,13 @@ Phase 1 (starts after explicit approval).
 - D20: test suites for new modules are delegated to subagents (user preference); results independently re-verified in the main session before commit.
 - D21: terminal report is fully static (no spinner/progress animation). Analysis completes well under a second for typical projects; a live display would be noise and risks corrupting CI logs. Revisit only if Phase 8 benchmarks show slow scans.
 - D22: suppressions only honored in single-line comments; @ts-nocheck only in file-leading region — mirrors tsc's own semantics, kills doc-comment prose false positives.
+- D23: no performance optimization in Phase 8 — benchmark showed ~900 files/s / 1.1 s for 1000 files; caching/parallelism unjustified. scripts/benchmark.ts is the regression harness.
+- D24: discovery canonicalizes with realpath: each real file analyzed once; symlink targets outside the project are excluded (in-project link path cannot smuggle outside content); broken symlinks reported.
+- D25: files listed by tsconfig that TypeScript cannot read surface as file-unreadable info findings — nothing silently dropped.
 
 ## Community Docs
 - Expanded per user request (docs are a first-class deliverable): features/terminal-report.md (real example output), development/architecture.md, development/project-structure.md, development/testing.md, development/performance.md, security/security-model.md. README.md written (comprehensive).
 - TODO (user-requested, end of development / Phase 10): add a cool logo (animated if feasible) to the right side of the VitePress landing hero.
 
 ## Last Completed Checks
-- Phase 7: typecheck ✓, 89/89 tests ✓ (20 new: JSON schema/determinism, escapeHtml XSS payloads, HTML no-script/no-remote-assets/no-injection, spawned-CLI for both formats; subagent-written, re-verified), build ✓, docs:build ✓, demo smoke ✓ (json stdout parses; html file 8.2 KB self-contained).
+- Phase 8: typecheck ✓, 95/95 tests ✓ (6 hardening regression tests by subagent, re-verified), build ✓, docs:build ✓, benchmark re-run after changes: 505 files/s (no regression).

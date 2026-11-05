@@ -11,24 +11,19 @@ Performance is part of the implementation, not a later cleanup. The rules: bench
 
 ## Measured numbers
 
-Self-scan of the TypeScope codebase (17 TypeScript files, 512 eligible coverage positions, strict tsconfig):
+Benchmark (`node scripts/benchmark.ts <fileCount>`, synthetic project: 17 typed functions + JSON.parse + assertions per file, strict tsconfig, Node 24, Linux):
 
-```text
-Files 17   Duration ~0.5s   Coverage 99.8%
-```
+| Scale | Discovery | Program + analysis | Total | Throughput |
+|-------|-----------|--------------------|-------|------------|
+| 300 files / 19,500 positions | 9 ms | 618 ms | 627 ms | ~479 files/s |
+| 1000 files / 65,000 positions | 13 ms | 1096 ms | 1108 ms | ~902 files/s |
 
-Measured with the built CLI on the development machine (Node 24, Linux); numbers are indicative, not a benchmark suite.
+Self-scan of the TypeScope codebase (17 files, 512 positions): ~0.5 s. Numbers are indicative, not a certified benchmark suite.
 
-## Known heavier operations
+## Phase 8 verdict
 
-- `checker.isTypeAssignableTo` for unrelated-type assertion detection (two calls per non-trivial assertion) — candidate for Phase 8 measurement.
-- Suppression comment scanning touches every node's trivia ranges — candidate for measurement on large files.
+**No optimization.** At 1000 files the whole scan finishes in about a second; caching, parallelism or worker threads would add complexity for no measurable user benefit. The two suspects from the code review (`checker.isTypeAssignableTo`, suppression trivia scanning) are dwarfed by `ts.createProgram` — if this ever changes on real projects, the benchmark script will show it before any code is touched.
 
-## Phase 8 plan
+## Large file guard
 
-1. Benchmark on a large real-world project before changing anything.
-2. Measure, then optimize only proven hotspots (candidates: checker calls, trivia scanning, program creation).
-3. Re-benchmark after each optimization and record results here.
-4. Consider parallelization only with a measured win; worker threads are not free.
-
-Per-file progress display will only be added if scans become slow enough to need one.
+Files larger than 4 MB (`MAX_SOURCE_FILE_BYTES` in `src/core/project.ts`) are skipped before the program is built — they are almost always generated code, and parsing them dominates runtime and memory. Each skipped file produces an info-level `file-skipped` finding so nothing disappears silently.
