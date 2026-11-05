@@ -4,8 +4,8 @@ import { statSync } from 'node:fs'
 import type { ScanRequest } from '../types.ts'
 import { loadProject } from '../../core/project.ts'
 import { analyzeProject } from '../../core/analyzer.ts'
-import { colorize, supportsColor } from '../../utils/colors.ts'
-import { name, version } from '../../index.ts'
+import { renderTerminalReport } from '../../reports/terminal.ts'
+import { supportsColor } from '../../utils/colors.ts'
 
 /**
  * Run the scan command. Returns a process exit code.
@@ -37,27 +37,8 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
 
   const analysis = analyzeProject(result)
   const color = request.color && supportsColor(stdout)
-  const dim = (text: string) => colorize(text, 'gray', color)
 
-  console.log(colorize(`${name} v${version}`, 'bold', color))
-  console.log()
-  console.log(`${colorize('Project', 'cyan', color)} ${result.projectDir}`)
-  console.log(`${colorize('Config', 'cyan', color)}  ${result.configPath}${request.config === undefined ? dim(' (default)') : ''}`)
-  console.log(`${colorize('Files', 'cyan', color)}   ${result.fileNames.length}`)
-  console.log()
-  const coverage = analysis.project.typeCoverage
-  const coverageText = coverage === null ? 'n/a' : `${(coverage * 100).toFixed(1)}%`
-  const coverageColor = coverage === null ? 'gray' : coverage >= 0.8 ? 'green' : coverage >= 0.5 ? 'yellow' : 'red'
-  console.log(`${colorize('TYPE COVERAGE', 'bold', color)} ${colorize(coverageText, coverageColor, color)} ${dim(`${analysis.project.eligiblePositions} positions`)}`)
-  console.log(`${colorize('Explicit any', 'cyan', color)}        ${analysis.project.explicitAny}`)
-  console.log(`${colorize('Implicit any', 'cyan', color)}        ${analysis.project.implicitAny}`)
-  console.log(`${colorize('Unsafe assertions', 'cyan', color)}   ${analysis.project.unsafeAssertions}`)
-  console.log(`${colorize('Non-null assertions', 'cyan', color)} ${analysis.project.nonNullAssertions}`)
-  console.log(`${colorize('Suppressions', 'cyan', color)}        ${analysis.project.suppressions}`)
-  console.log(`${colorize('Unvalidated boundaries', 'cyan', color)} ${analysis.project.runtimeBoundaries}`)
-  console.log(`${colorize('Weak strictness flags', 'cyan', color)} ${analysis.project.weakStrictnessFlags}`)
-  console.log(`${colorize('Findings', 'cyan', color)}            ${analysis.findings.length}`)
-  console.log(`${colorize('Duration', 'cyan', color)}            ${(analysis.durationMs / 1000).toFixed(2)}s`)
+  stdout.write(renderTerminalReport(analysis, { projectDir: result.projectDir, configPath: result.configPath }, color))
   return 0
 }
 

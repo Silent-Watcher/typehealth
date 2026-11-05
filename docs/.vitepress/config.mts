@@ -3,11 +3,13 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'TypeScope',
   description: 'Lightweight TypeScript type safety analyzer',
-  themeConfig: {
-    nav: [
-      { text: 'Guide', link: '/guide/introduction' },
-      { text: 'Development', link: '/development/development-setup' },
-    ],
+    themeConfig: {
+      nav: [
+        { text: 'Guide', link: '/guide/introduction' },
+        { text: 'Concepts', link: '/concepts/analysis-engine' },
+        { text: 'Features', link: '/features/terminal-report' },
+        { text: 'Development', link: '/development/development-setup' },
+      ],
     sidebar: {
       '/guide/': [
         {
@@ -29,11 +31,23 @@ export default defineConfig({
           ],
         },
       ],
+      '/features/': [
+        {
+          text: 'Features',
+          items: [
+            { text: 'Terminal Report', link: '/features/terminal-report' },
+          ],
+        },
+      ],
       '/development/': [
         {
           text: 'Development',
           items: [
             { text: 'Development Setup', link: '/development/development-setup' },
+            { text: 'Architecture', link: '/development/architecture' },
+            { text: 'Project Structure', link: '/development/project-structure' },
+            { text: 'Testing', link: '/development/testing' },
+            { text: 'Performance', link: '/development/performance' },
           ],
         },
       ],
@@ -43,6 +57,14 @@ export default defineConfig({
           items: [
             { text: 'Exit Codes', link: '/reference/exit-codes' },
             { text: 'Metric Definitions', link: '/reference/metric-definitions' },
+          ],
+        },
+      ],
+      '/security/': [
+        {
+          text: 'Security',
+          items: [
+            { text: 'Security Model', link: '/security/security-model' },
           ],
         },
       ],

@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 5 — Runtime Boundary Analysis (complete)
+Phase 6 — Terminal Reporting UI (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -25,6 +25,7 @@ Phase 5 — Runtime Boundary Analysis (complete)
 - R5: Empty-project edge — resolved: tsconfig error 18003 now treated as empty project (D17).
 - R6: `isTypeAssignableTo` used for unrelated-type assertions is a heavier checker call; watch in Phase 8 benchmarks.
 - R7: boundary heuristics are name-based (req/request/ctx, validator method names); false positives/negatives expected and documented. Revisit real-framework behavior (express/amqplib fixtures) if users report noise.
+- R8: README/docs link to https://typescope.dev — domain not registered yet; decide before Phase 10 publication.
 
 ## Verification Log
 - 2026-11-05: environment inspected, planning docs created, planning commit `de75e75`.
@@ -33,3 +34,4 @@ Phase 5 — Runtime Boundary Analysis (complete)
 - 2026-11-05 Phase 3 (+ third-party policy: commander, picocolors→later replaced, typescript→runtime dep): typecheck ✓, 23/23 tests ✓, build ✓, docs:build ✓, discovery smoke ✓.
 - 2026-11-05 Phase 4 (+ colors→node:util styleText): typecheck ✓, 35/35 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (99.7% coverage, 332 positions, 0.53s).
 - 2026-11-05 Phase 5 (boundary tests delegated to subagent, re-verified): typecheck ✓, 47/47 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (0 boundaries in this repo).
+- 2026-11-05 Phase 6 (terminal-report tests delegated to subagent, re-verified): typecheck ✓, 69/69 tests ✓, build ✓, docs:build ✓; suppression heuristic tightened (D22); docs expansion + README.

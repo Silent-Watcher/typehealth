@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 5 — Runtime Boundary Analysis (complete)
-- Completed Phases: 5/10
+- Current Phase: Phase 6 — Terminal Reporting UI (complete)
+- Completed Phases: 6/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -86,12 +86,13 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Commit phase
 
 ### Phase 6 — Terminal Reporting UI
-- [ ] Header, project info, colored progress bars, percentages
-- [ ] Metric summaries, file rankings, severity indicators, findings
-- [ ] Analysis duration, final summary
-- [ ] Real progress only; TTY/CI fallback; NO_COLOR support
-- [ ] Documentation with actual output examples
-- [ ] Commit phase
+- [x] Header box, project info, colored progress bars, percentages
+- [x] Metric summaries, file rankings (worst 5 first), severity indicators, top findings (10, severity-ordered)
+- [x] Analysis duration, final summary
+- [x] Real progress only (static report — no spinner; decision D21); TTY/CI fallback; NO_COLOR support
+- [x] Documentation with actual output examples (features/terminal-report.md, demo-project output)
+- [x] Commit phase
+- Suppression heuristic tightened to match tsc semantics (single-line comments only; @ts-nocheck file-start only) — doc-comment prose no longer false-positives.
 
 ### Phase 7 — JSON and HTML Reports
 - [ ] Stable versioned JSON schema, deterministic ordering
@@ -157,6 +158,12 @@ Phase 1 (starts after explicit approval).
 - D18: typescript must be a runtime dependency (D12) — confirmed during Phase 4.
 - D19: boundary detection is a separate AST pass per file (src/core/boundaries.ts), name-based heuristics, no taint analysis. fetch()+.json() each report separately; request-data access grouped per root.prop to avoid flooding. Deliberately simple, documented as uncertain.
 - D20: test suites for new modules are delegated to subagents (user preference); results independently re-verified in the main session before commit.
+- D21: terminal report is fully static (no spinner/progress animation). Analysis completes well under a second for typical projects; a live display would be noise and risks corrupting CI logs. Revisit only if Phase 8 benchmarks show slow scans.
+- D22: suppressions only honored in single-line comments; @ts-nocheck only in file-leading region — mirrors tsc's own semantics, kills doc-comment prose false positives.
+
+## Community Docs
+- Expanded per user request (docs are a first-class deliverable): features/terminal-report.md (real example output), development/architecture.md, development/project-structure.md, development/testing.md, development/performance.md, security/security-model.md. README.md written (comprehensive).
+- TODO (user-requested, end of development / Phase 10): add a cool logo (animated if feasible) to the right side of the VitePress landing hero.
 
 ## Last Completed Checks
-- Phase 5: typecheck ✓, 47/47 tests ✓ (12 new boundary tests written by subagent, re-verified independently), build ✓, docs:build ✓, self-scan smoke ✓ (0 boundaries in this repo — correct, no HTTP/queue code).
+- Phase 6: typecheck ✓, 69/69 tests ✓ (22 new terminal-report tests written by subagent, re-verified independently), build ✓, docs:build ✓, demo-project scan produces the documented example output.

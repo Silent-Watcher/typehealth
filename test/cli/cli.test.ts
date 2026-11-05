@@ -47,7 +47,8 @@ test('scan prints analysis summary and exits 0', () => {
   assert.match(result.stdout, /Project/)
   assert.match(result.stdout, /Files\s+\d+/)
   assert.match(result.stdout, /TYPE COVERAGE/)
-  assert.match(result.stdout, /Findings/)
+  assert.match(result.stdout, /METRICS/)
+  assert.match(result.stdout, /Analysis completed successfully\./)
 })
 
 test('unknown command exits 2 with message on stderr', () => {
