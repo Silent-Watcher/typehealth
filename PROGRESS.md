@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 1 — Initialization (complete)
-- Completed Phases: 1/10
+- Current Phase: Phase 2 — CLI Foundation (complete)
+- Completed Phases: 2/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -40,16 +40,16 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - No source analysis in this phase.
 
 ### Phase 2 — CLI Foundation
-- [ ] Argument parsing (scan, --format, --cwd, --config, --no-color, --help, --version)
-- [ ] Command/option validation
-- [ ] Help and version output
-- [ ] Project directory resolution
-- [ ] Color controls (NO_COLOR, --no-color, non-TTY)
-- [ ] Meaningful exit codes
-- [ ] Terminal rendering primitives (separate from analysis logic)
-- [ ] Tests for all supported arguments
-- [ ] Documentation updated
-- [ ] Commit phase
+- [x] Argument parsing (scan, --format, --cwd, --config, --no-color, --help, --version; both space and = forms)
+- [x] Command/option validation
+- [x] Help and version output
+- [x] Project directory resolution
+- [x] Color controls (NO_COLOR, --no-color, non-TTY)
+- [x] Meaningful exit codes (0 success, 1 unexpected, 2 usage/config)
+- [x] Terminal rendering primitives (colorize, progressBar, supportsColor in src/utils/colors.ts)
+- [x] Tests for all supported arguments (unit + spawned-process CLI integration)
+- [x] Documentation updated (cli-reference.md, exit-codes.md)
+- [x] Commit phase
 
 ### Phase 3 — TypeScript Project Discovery
 - [ ] tsconfig discovery, parsing, compiler option loading
@@ -143,6 +143,9 @@ Phase 1 (starts after explicit approval).
 - D4: Source/test files import with explicit `.ts` extensions (works with node type stripping, `tsc --noEmit` via `allowImportingTsExtensions`, and tsdown). Decided Phase 1.
 - D5: tsdown `outExtensions` forces `.js`/`.d.ts` output so package.json `exports`/`bin` paths match. Decided Phase 1.
 - D6: `private: true` until Phase 10 to prevent accidental publish.
+- D7: Package manager switched to pnpm (12.10.1), pinned via `packageManager` field. Decided Phase 2.
+- D8: Exit codes: 0 success, 1 unexpected internal error, 2 usage/configuration error. Decided Phase 2, documented in docs/reference/exit-codes.md.
+- D9: `--format json|html` accepted by the parser but exit 2 with a "not implemented" notice until Phase 7.
 
 ## Last Completed Checks
-- Phase 1: `npm run build` (tsdown 0.23.5, ESM + dts, shebang preserved), `npm run typecheck` (tsc 5.x strict), `npm test` (1 passing, node --test), `npm run docs:build` (VitePress 1.6.4) all pass. `node dist/cli/index.js` runs and exits 1 with stub message.
+- Phase 2: build ✓, typecheck ✓, 22/22 tests ✓ (args unit + colors unit + spawned-process CLI integration), docs:build ✓, built CLI verified (`--version`, `scan --help`, exit codes 0/2).

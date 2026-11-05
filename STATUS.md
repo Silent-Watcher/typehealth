@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 1 — Initialization (complete)
+Phase 2 — CLI Foundation (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -26,3 +26,4 @@ Phase 1 — Initialization (complete)
 ## Verification Log
 - 2026-11-05: environment inspected, planning docs created, planning commit `de75e75`.
 - 2026-11-05 Phase 1: build ✓ (dist/index.js, dist/cli/index.js + d.ts), typecheck ✓ (strict), test ✓ (1 pass, node --test), docs:build ✓ (1.67s), bin executes (exit 1 stub message).
+- 2026-11-05 Phase 2 (pnpm 12.10.1): build ✓, typecheck ✓, tests 22/22 ✓ (unit + CLI integration via spawned process), docs:build ✓, built CLI verified for --version / scan --help / exit codes 0 and 2.

@@ -4,6 +4,7 @@
   "description": "Lightweight TypeScript type safety analyzer",
   "type": "module",
   "license": "MIT",
+  "packageManager": "pnpm@12.10.1",
   "private": true,
   "engines": {
     "node": ">=22.18"

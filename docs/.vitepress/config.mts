@@ -15,6 +15,7 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Getting Started', link: '/guide/getting-started' },
+            { text: 'CLI Reference', link: '/guide/cli-reference' },
           ],
         },
       ],
@@ -23,6 +24,14 @@ export default defineConfig({
           text: 'Development',
           items: [
             { text: 'Development Setup', link: '/development/development-setup' },
+          ],
+        },
+      ],
+      '/reference/': [
+        {
+          text: 'Reference',
+          items: [
+            { text: 'Exit Codes', link: '/reference/exit-codes' },
           ],
         },
       ],
