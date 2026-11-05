@@ -1,23 +1,18 @@
-import pc from 'picocolors'
+import { styleText } from 'node:util'
 
-const COLOR_FNS = {
-  red: pc.red,
-  green: pc.green,
-  yellow: pc.yellow,
-  cyan: pc.cyan,
-  gray: pc.gray,
-  bold: pc.bold,
-} as const
+export type ColorName = 'red' | 'green' | 'yellow' | 'cyan' | 'gray' | 'bold'
 
-export type ColorName = keyof typeof COLOR_FNS
-
-/** Color is enabled only when the stream is a TTY and picocolors' env checks pass (NO_COLOR etc.). */
+/** Color is enabled only when the stream is a TTY and NO_COLOR is unset. */
 export function supportsColor(stream: { isTTY?: boolean } = process.stdout): boolean {
-  return stream.isTTY === true && pc.isColorSupported
+  if (process.env.NO_COLOR !== undefined) return false
+  if (process.env.TERM === 'dumb') return false
+  return stream.isTTY === true
 }
 
+/** styleText itself validates against process.stdout (NO_COLOR, TTY), so an
+ *  enabled=true colorize can still degrade to plain text automatically. */
 export function colorize(text: string, color: ColorName, enabled: boolean): string {
-  return enabled ? COLOR_FNS[color](text) : text
+  return enabled ? styleText(color, text) : text
 }
 
 /** Render a filled progress bar. Values outside [0, max] are clamped.

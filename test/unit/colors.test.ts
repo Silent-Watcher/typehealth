@@ -1,12 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import pc from 'picocolors'
+import { styleText } from 'node:util'
 
 import { colorize, progressBar, supportsColor } from '../../src/utils/colors.ts'
 
-test('colorize delegates to picocolors when enabled', () => {
-  assert.equal(colorize('x', 'red', true), pc.red('x'))
+test('colorize delegates to styleText when enabled', () => {
+  assert.equal(colorize('x', 'red', true), styleText('red', 'x'))
   assert.equal(colorize('x', 'red', false), 'x')
 })
 
@@ -25,11 +25,15 @@ test('supportsColor is false when NO_COLOR is set', () => {
   if (!wasSet) delete process.env.NO_COLOR
 })
 
-test('supportsColor is false for non-TTY streams and follows picocolors env detection', () => {
+test('supportsColor is false for non-TTY streams and TERM=dumb', () => {
   const had = 'NO_COLOR' in process.env
   delete process.env.NO_COLOR
   assert.equal(supportsColor({ isTTY: false }), false)
-  // Under a TTY the decision belongs to picocolors (env-based).
-  assert.equal(supportsColor({ isTTY: true }), pc.isColorSupported)
+  const prevTerm = process.env.TERM
+  process.env.TERM = 'dumb'
+  assert.equal(supportsColor({ isTTY: true }), false)
+  delete process.env.TERM
+  assert.equal(supportsColor({ isTTY: true }), true)
+  if (prevTerm !== undefined) process.env.TERM = prevTerm
   if (had) process.env.NO_COLOR = '1'
 })

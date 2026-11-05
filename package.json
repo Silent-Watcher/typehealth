@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "picocolors": "^1.1.1",
     "typescript": "^5.9.3"
   }
 }

@@ -24,6 +24,7 @@ export default defineConfig({
           text: 'Concepts',
           items: [
             { text: 'Analysis Engine', link: '/concepts/analysis-engine' },
+            { text: 'Type Safety Metrics', link: '/concepts/type-safety-metrics' },
           ],
         },
       ],
@@ -40,6 +41,7 @@ export default defineConfig({
           text: 'Reference',
           items: [
             { text: 'Exit Codes', link: '/reference/exit-codes' },
+            { text: 'Metric Definitions', link: '/reference/metric-definitions' },
           ],
         },
       ],

@@ -53,7 +53,10 @@ export function loadProject(options: { projectDir: string; configPath?: string }
     /*existingOptions*/ undefined,
     configPath,
   )
-  const errors = parsed.errors.filter((d) => d.category === ts.DiagnosticCategory.Error)
+  // Code 18003 ("no inputs were found") is treated as an empty project, not a config error.
+  const errors = parsed.errors.filter(
+    (d) => d.category === ts.DiagnosticCategory.Error && d.code !== 18003,
+  )
   if (errors.length > 0) {
     return { ok: false, message: ts.formatDiagnostics(errors, DIAGNOSTIC_FORMAT_HOST).trim() }
   }

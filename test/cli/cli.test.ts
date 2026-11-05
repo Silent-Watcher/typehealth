@@ -41,12 +41,13 @@ test('scan --help prints scan usage and exits 0', () => {
   assert.match(result.stdout, /--format/)
 })
 
-test('scan prints discovered project info and exits 0', () => {
+test('scan prints analysis summary and exits 0', () => {
   const result = runCli(['scan'])
   assert.equal(result.status, 0)
   assert.match(result.stdout, /Project/)
   assert.match(result.stdout, /Files\s+\d+/)
-  assert.match(result.stdout, /Analysis is not implemented yet/)
+  assert.match(result.stdout, /TYPE COVERAGE/)
+  assert.match(result.stdout, /Findings/)
 })
 
 test('unknown command exits 2 with message on stderr', () => {
