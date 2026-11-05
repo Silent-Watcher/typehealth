@@ -1,13 +1,14 @@
 import path from 'node:path'
 import { statSync } from 'node:fs'
 
-import type { ScanRequest } from '../args.ts'
+import type { ScanRequest } from '../types.ts'
+import { loadProject } from '../../core/project.ts'
 import { colorize, supportsColor } from '../../utils/colors.ts'
 import { name, version } from '../../index.ts'
 
 /**
  * Run the scan command. Returns a process exit code.
- * Path validation here; actual project discovery lands in Phase 3.
+ * Analysis itself lands in Phase 4; this phase reports discovery results.
  */
 export function runScan(request: ScanRequest, stdout = process.stdout): number {
   if (request.format !== 'terminal') {
@@ -21,16 +22,16 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
     return 2
   }
 
-  let configPath: string
-  if (request.config !== undefined) {
-    configPath = path.resolve(request.config)
-    if (!isFile(configPath)) {
-      console.error(`typescope: tsconfig not found: ${configPath}`)
-      return 2
-    }
-  } else {
-    // Default discovery (tsconfig search) is implemented in Phase 3.
-    configPath = path.join(projectDir, 'tsconfig.json')
+  const configPath = request.config !== undefined ? path.resolve(request.config) : undefined
+  if (configPath !== undefined && !isFile(configPath)) {
+    console.error(`typescope: tsconfig not found: ${configPath}`)
+    return 2
+  }
+
+  const result = loadProject({ projectDir, configPath })
+  if (!result.ok) {
+    console.error(`typescope: ${result.message}`)
+    return 2
   }
 
   const color = request.color && supportsColor(stdout)
@@ -38,11 +39,12 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
 
   console.log(colorize(`${name} v${version}`, 'bold', color))
   console.log()
-  console.log(`${colorize('Project', 'cyan', color)} ${projectDir}`)
-  console.log(`${colorize('Config', 'cyan', color)}  ${configPath}${request.config === undefined ? dim(' (default)') : ''}`)
+  console.log(`${colorize('Project', 'cyan', color)} ${result.projectDir}`)
+  console.log(`${colorize('Config', 'cyan', color)}  ${result.configPath}${request.config === undefined ? dim(' (default)') : ''}`)
+  console.log(`${colorize('Files', 'cyan', color)}   ${result.fileNames.length}`)
   console.log(`${colorize('Format', 'cyan', color)} ${request.format}`)
   console.log()
-  console.log('Analysis is not implemented yet (expected in Phase 3).')
+  console.log('Analysis is not implemented yet (expected in Phase 4).')
   return 0
 }
 

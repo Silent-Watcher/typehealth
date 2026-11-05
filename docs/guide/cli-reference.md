@@ -26,9 +26,11 @@ Both `--format json` and `--format=json` forms are accepted.
 
 Color is disabled automatically when stdout is not a TTY or when the `NO_COLOR` environment variable is set.
 
+A `tsconfig.json` must be resolvable — either via `--config` or in the project directory tree. Without one the scan exits with code 2.
+
 ## Current status
 
-The analyzer itself is under development (Phase 3). Running `typescope scan` currently validates the options and prints the resolved project configuration. `--format json` and `--format html` are accepted by the parser but report "not implemented yet" until Phase 7.
+Running `typescope scan` currently validates the options, resolves the tsconfig, and prints the number of discovered source files. The analysis stage lands in Phase 4; `--format json` and `--format html` are accepted by the parser but report "not implemented yet" until Phase 7. See [Analysis Engine](/concepts/analysis-engine) for how discovery works.
 
 ## Exit codes
 

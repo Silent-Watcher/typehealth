@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 2 — CLI Foundation (complete)
-- Completed Phases: 2/10
+- Current Phase: Phase 3 — TypeScript Project Discovery (complete)
+- Completed Phases: 3/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -52,14 +52,14 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Commit phase
 
 ### Phase 3 — TypeScript Project Discovery
-- [ ] tsconfig discovery, parsing, compiler option loading
-- [ ] Source file discovery with include/exclude support
-- [ ] Project root validation and safe path handling
-- [ ] File filtering (node_modules, dist, build, coverage, .d.ts by default)
-- [ ] Error reporting for malformed/inaccessible config
-- [ ] Fixtures and integration tests
-- [ ] Documentation updated
-- [ ] Commit phase
+- [x] tsconfig discovery (ts.findConfigFile), parsing, compiler option loading
+- [x] Source file discovery with include/exclude support (ts.parseJsonConfigFileContent)
+- [x] Project root validation and safe path handling (files filtered to project scope)
+- [x] File filtering (node_modules, dist, build, coverage, .d.ts by default)
+- [x] Error reporting for malformed config (TypeScript diagnostics, exit 2) and missing tsconfig (actionable message)
+- [x] Integration tests with temporary-directory fixtures (7 tests)
+- [x] Documentation updated (concepts/analysis-engine.md, cli-reference)
+- [x] Commit phase
 
 ### Phase 4 — Core Type Safety Analyzer
 - [ ] Explicit Any detection
@@ -146,6 +146,11 @@ Phase 1 (starts after explicit approval).
 - D7: Package manager switched to pnpm (12.10.1), pinned via `packageManager` field. Decided Phase 2.
 - D8: Exit codes: 0 success, 1 unexpected internal error, 2 usage/configuration error. Decided Phase 2, documented in docs/reference/exit-codes.md.
 - D9: `--format json|html` accepted by the parser but exit 2 with a "not implemented" notice until Phase 7.
+- D10 (supersedes D3/D9 preamble): per the third-party tools policy, CLI parsing switched from hand-written to commander 15; arg unit tests replaced by spawned-process integration tests. Phase 2 refactored during Phase 3.
+- D11: terminal colors switched from hand-rolled ANSI to picocolors. Custom `progressBar` kept: it is a static report bar, cli-progress solves live updating which we do not need.
+- D12: `typescript` moved to runtime `dependencies` (Compiler API is required at runtime on user machines).
+- D13: no tsconfig.json found → exit 2 with actionable message (same as `tsc` failing on no inputs). Revisit if a real use case needs configless scans.
+- D14: discovery is always restricted to the project directory, even when tsconfig include patterns reach outside; `--config` may live elsewhere but its matched files must be in-scope.
 
 ## Last Completed Checks
-- Phase 2: build ✓, typecheck ✓, 22/22 tests ✓ (args unit + colors unit + spawned-process CLI integration), docs:build ✓, built CLI verified (`--version`, `scan --help`, exit codes 0/2).
+- Phase 3: typecheck ✓, 23/23 tests ✓ (CLI integration incl. new failure paths, 7 discovery integration tests on temp fixtures), build ✓, docs:build ✓, built CLI smoke-tested (scan prints Files count for this repo: 10 files).

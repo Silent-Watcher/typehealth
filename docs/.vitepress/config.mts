@@ -19,6 +19,14 @@ export default defineConfig({
           ],
         },
       ],
+      '/concepts/': [
+        {
+          text: 'Concepts',
+          items: [
+            { text: 'Analysis Engine', link: '/concepts/analysis-engine' },
+          ],
+        },
+      ],
       '/development/': [
         {
           text: 'Development',

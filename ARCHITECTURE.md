@@ -4,6 +4,7 @@ Initial architecture, Phase 0. Kept minimal; extended only when a phase demands 
 
 ## Principles
 - Simplicity over abstraction: plain functions and modules, no class hierarchies without need.
+- Do not reinvent the wheel: generic infrastructure (CLI parsing, terminal colors) uses established libraries (commander, picocolors); custom code is reserved for TypeScope-specific analysis, metrics and reporting.
 - Performance is part of implementation: reuse TypeScript Program/SourceFile, minimize filesystem ops, exclude node_modules/dist/build/coverage/.d.ts by default. Benchmark before caching or parallelization.
 - Metrics are independent; no composite score.
 - Analysis, metrics, reporting, and CLI stay separated.
@@ -15,12 +16,12 @@ Initial architecture, Phase 0. Kept minimal; extended only when a phase demands 
 src/
 ├── index.ts          # public API surface (kept small)
 ├── cli/
-│   ├── index.ts      # entry, wiring
-│   ├── args.ts       # parsing + validation (no framework)
+│   ├── index.ts      # entry, commander program, exit-code mapping
+│   ├── types.ts      # ScanRequest and shared CLI types
 │   └── commands/
 │       └── scan.ts   # scan command orchestration
 ├── core/
-│   ├── project.ts    # tsconfig + source file discovery
+│   ├── project.ts    # tsconfig discovery + source file listing (TypeScript API)
 │   ├── analyzer.ts   # Compiler API driven analysis
 │   ├── metrics.ts    # metric definitions + calculation
 │   ├── findings.ts   # finding/severity types
@@ -30,8 +31,7 @@ src/
 │   ├── json.ts       # deterministic JSON report
 │   └── html.ts       # self-contained HTML report
 └── utils/
-    ├── paths.ts      # safe path handling
-    ├── colors.ts     # NO_COLOR / TTY aware coloring
+    ├── colors.ts     # picocolors-based coloring + progress bar primitive
     └── errors.ts     # error taxonomy (config vs analysis)
 ```
 
