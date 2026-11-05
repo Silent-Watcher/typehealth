@@ -5,6 +5,15 @@
   "type": "module",
   "license": "MIT",
   "packageManager": "pnpm@12.10.1",
+  "author": "Silent-Watcher",
+  "homepage": "https://github.com/Silent-Watcher/typehealth#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silent-Watcher/typehealth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Silent-Watcher/typehealth/issues"
+  },
   "keywords": [
     "typescript",
     "type-safety",

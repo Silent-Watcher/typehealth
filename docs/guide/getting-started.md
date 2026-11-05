@@ -1,12 +1,11 @@
 # Getting Started
 
-The npm package is release-ready and awaiting publication. Until then, install from a clone of the repository:
+TypeHealth is on npm: [npmjs.com/package/typehealth](https://www.npmjs.com/package/typehealth).
 
 ```sh
-git clone <repository-url>
-cd typehealth
-pnpm install
-pnpm run build
+npm install -D typehealth
+# or
+pnpm add -D typehealth
 ```
 
 ## Requirements
@@ -16,11 +15,22 @@ pnpm run build
 ## First scan
 
 ```sh
-# from source
-node dist/cli/index.js scan
-
-# after publication (or via the packed tarball)
 npx typehealth scan
 ```
 
 `scan` finds your nearest `tsconfig.json`, analyzes the source files it discovers, and prints the terminal report — see [CLI Reference](/guide/cli-reference) for all options and [Type Safety Metrics](/concepts/type-safety-metrics) for how to read the numbers.
+
+## Quick wins
+
+```sh
+# fail CI below 80% coverage
+npx typehealth scan --fail-under 80
+
+# only what changed in this PR
+npx typehealth scan --changed origin/main
+
+# a shareable, self-contained HTML report
+npx typehealth scan --format html
+```
+
+Running from source (for contributors) is covered in [Development Setup](/development/development-setup).

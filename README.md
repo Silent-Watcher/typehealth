@@ -1,10 +1,15 @@
 # TypeHealth
 
+[![npm version](https://img.shields.io/npm/v/typehealth.svg)](https://www.npmjs.com/package/typehealth)
+[![npm downloads](https://img.shields.io/npm/dm/typehealth.svg)](https://www.npmjs.com/package/typehealth)
+[![license](https://img.shields.io/npm/l/typehealth.svg)](./LICENSE)
+[![node](https://img.shields.io/node/v/typehealth.svg)](https://www.npmjs.com/package/typehealth)
+
 A lightweight TypeScript **type safety analyzer**. TypeHealth analyzes your TypeScript project and shows you — in plain numbers, not vibes — how effectively the type system is actually being used.
 
 ```text
 ╭──────────────────────╮
-│ TYPEHEALTH            │
+│ TYPEHEALTH           │
 │ Type Safety Analyzer │
 ╰──────────────────────╯
 
@@ -47,22 +52,22 @@ Most tools count keywords. TypeHealth answers questions you actually ask:
 - **Where does untrusted data enter the program?** HTTP inputs, `JSON.parse` results, HTTP responses and queue payloads are reported as *potentially* unvalidated — clearly labeled uncertain, because static analysis cannot prove runtime safety.
 - **Is the compiler even helping?** Disabled strictness options are listed per project.
 
-Metrics are **independent** — no arbitrary composite score. Each has a documented formula: [Metric Definitions](https://typehealth.dev/reference/metric-definitions).
+Metrics are **independent** — no arbitrary composite score. Each has a documented formula: [Metric Definitions](./docs/reference/metric-definitions.md).
 
 ## Features
 
--  **Type coverage** with per-file health ranking (worst files first)
--  **Explicit / implicit `any`**, unsafe assertions, non-null assertions
--  **Suppression detection** — `@ts-ignore`, `@ts-nocheck`, `@ts-expect-error`
--  **Runtime boundary heuristics** for express/fastify/koa, fetch, JSON.parse, amqplib, KafkaJS, bullmq
--  **Strictness audit** of your tsconfig
--  **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
--  **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
--  **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
--  **CI-ready**: `--changed`, `--fail-under`, baseline ratcheting — [GitHub Actions recipe](https://typehealth.dev/features/ci-integration)
--  **Security-first**: analyzed code is never executed, file discovery is scoped to your project
--  **Fast**: one shared TypeScript program, one AST walk per file — ~900 files/s
--  **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
+- 📊 **Type coverage** with per-file health ranking (worst files first)
+- 🔍 **Explicit / implicit `any`**, unsafe assertions, non-null assertions
+- 🚫 **Suppression detection** — `@ts-ignore`, `@ts-nocheck`, `@ts-expect-error`
+- 🌐 **Runtime boundary heuristics** for express/fastify/koa, fetch, JSON.parse, amqplib, KafkaJS, bullmq
+- ⚙️ **Strictness audit** of your tsconfig
+- 🖥️ **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
+- 📄 **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
+- 🌗 **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
+- 🚦 **CI-ready**: `--changed`, `--fail-under`, baseline ratcheting — [GitHub Actions recipe](./docs/features/ci-integration.md)
+- 🔒 **Security-first**: analyzed code is never executed, file discovery is scoped to your project
+- ⚡ **Fast**: one shared TypeScript program, one AST walk per file — ~900 files/s
+- 📦 **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
 
 ## Requirements
 
@@ -70,25 +75,19 @@ Metrics are **independent** — no arbitrary composite score. Each has a documen
 
 ## Install
 
-The package is release-ready and awaiting npm publication (name and registry account are the remaining steps):
-
 ```sh
-npm install -D typehealth   # once published
+npm install -D typehealth
+# or
+pnpm add -D typehealth
 ```
 
-Until then, install from source or from the packed tarball:
+Then run it:
 
 ```sh
-git clone <repository-url>
-cd typehealth
-pnpm install
-pnpm run build
-node dist/cli/index.js scan
-
-# or test the packed tarball directly
-pnpm pack
-npm install ./typehealth-0.1.0.tgz
+npx typehealth scan
 ```
+
+On npm: [npmjs.com/package/typehealth](https://www.npmjs.com/package/typehealth) · Source: [github.com/Silent-Watcher/typehealth](https://github.com/Silent-Watcher/typehealth)
 
 ## Usage
 
@@ -120,19 +119,22 @@ A `tsconfig.json` must be resolvable — via `--config` or in the directory tree
 
 ## Documentation
 
-Full documentation at **[typehealth.dev](https://typehealth.dev)** (built with VitePress, sources in [`docs/`](./docs)):
+Full documentation lives in [`docs/`](./docs) (built with VitePress — run it locally with `pnpm run docs:dev`):
 
-- [Introduction](https://typehealth.dev/guide/introduction) — what TypeHealth measures and why
-- [CLI Reference](https://typehealth.dev/guide/cli-reference) — every option and exit code
-- [Type Safety Metrics](https://typehealth.dev/concepts/type-safety-metrics) — the measurement model
-- [Metric Definitions](https://typehealth.dev/reference/metric-definitions) — exact formulas
-- [Terminal / JSON / HTML reports](https://typehealth.dev/features/terminal-report) — output formats
-- [Runtime Boundaries](https://typehealth.dev/concepts/runtime-boundaries) — what the boundary heuristics can and cannot tell you
-- [Security Model](https://typehealth.dev/security/security-model) — the untrusted-input contract
+- [Introduction](./docs/guide/introduction.md) — what TypeHealth measures and why
+- [CLI Reference](./docs/guide/cli-reference.md) — every option and exit code
+- [Type Safety Metrics](./docs/concepts/type-safety-metrics.md) — the measurement model
+- [Metric Definitions](./docs/reference/metric-definitions.md) — exact formulas
+- [Terminal / JSON / HTML reports](./docs/features/terminal-report.md) — output formats
+- [CI Integration](./docs/features/ci-integration.md) — `--changed`, `--fail-under`, baselines, GitHub Actions
+- [Runtime Boundaries](./docs/concepts/runtime-boundaries.md) — what the boundary heuristics can and cannot tell you
+- [Security Model](./docs/security/security-model.md) — the untrusted-input contract
 
 ## Development
 
 ```sh
+git clone https://github.com/Silent-Watcher/typehealth.git
+cd typehealth
 pnpm install
 pnpm run build        # tsdown → dist/
 pnpm test             # node --test (native runner, no Jest)
@@ -140,12 +142,12 @@ pnpm run typecheck    # tsc --noEmit, strict
 pnpm run docs:dev     # documentation dev server
 ```
 
-Architecture, testing conventions and performance notes: [Development docs](https://typehealth.dev/development/architecture). Development progress is tracked openly in [`PROGRESS.md`](./PROGRESS.md).
+Architecture, testing conventions and performance notes: [Development docs](./docs/development/architecture.md). Development progress is tracked openly in [`PROGRESS.md`](./PROGRESS.md).
 
 ## Security
 
-TypeHealth treats analyzed projects as untrusted input: your code is never executed, discovery never leaves your project directory, and all report content is escaped. Details: [Security Model](https://typehealth.dev/security/security-model). Found a security issue? Please open a private security advisory instead of a public issue.
+TypeHealth treats analyzed projects as untrusted input: your code is never executed, discovery never leaves your project directory, and all report content is escaped. Details: [Security Model](./docs/security/security-model.md). Found a security issue? Please open a private security advisory instead of a public issue.
 
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).
