@@ -21,4 +21,4 @@ TypeScope builds on the [TypeScript Compiler API](https://github.com/microsoft/T
 - File discovery is restricted to the project directory even if the tsconfig's `include` patterns reach outside it; use `--config` with a config whose patterns cover the intended scope.
 - Symlink handling is reviewed in the hardening phase (Phase 8).
 
-The analysis stage (metrics and findings) builds on this file list and is documented under [Type Safety Metrics](/concepts/type-safety-metrics) as it is implemented.
+The analysis stage (metrics and findings) builds on this file list and will be documented here as it is implemented.
