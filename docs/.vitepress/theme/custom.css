@@ -1,0 +1,13 @@
+/* Enlarge the hero logo and give it a soft glow. */
+.VPHero .image-src {
+  width: min(320px, 60vw);
+  height: auto;
+  border-radius: 26px;
+  box-shadow: 0 16px 56px rgb(88 166 255 / 0.18);
+}
+
+@media (min-width: 960px) {
+  .VPHero .image-src {
+    width: 340px;
+  }
+}
