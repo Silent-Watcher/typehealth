@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 3 — TypeScript Project Discovery (complete)
-- Completed Phases: 3/10
+- Current Phase: Phase 4 — Core Type Safety Analyzer (complete)
+- Completed Phases: 4/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -62,18 +62,18 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Commit phase
 
 ### Phase 4 — Core Type Safety Analyzer
-- [ ] Explicit Any detection
-- [ ] Implicit Any detection (type checker based)
-- [ ] Unsafe assertions (as any, double assertions, suspicious casts)
-- [ ] Non-null assertion detection
-- [ ] Type suppression detection (@ts-ignore / @ts-nocheck / @ts-expect-error)
-- [ ] Type Coverage calculation with documented numerator/denominator
-- [ ] File-level and project-level metrics
-- [ ] Findings with severity; no duplicate findings
-- [ ] Metric formulas documented
-- [ ] Comprehensive tests
-- [ ] Documentation updated
-- [ ] Commit phase
+- [x] Explicit Any detection (every `any` keyword in type positions)
+- [x] Implicit Any detection (type checker based, explicit any excluded)
+- [x] Unsafe assertions (as any → high; double, unrelated types → medium; legitimate casts not reported)
+- [x] Non-null assertion detection (low)
+- [x] Type suppression detection (@ts-ignore / @ts-nocheck / @ts-expect-error; comment-only, file-start handled)
+- [x] Type Coverage calculation (typed/eligible positions; constructors+setters excluded as return positions; null when empty)
+- [x] File-level and project-level metrics
+- [x] Findings with severity; deduplicated (file:line:column:rule) and deterministically ordered
+- [x] Metric formulas documented (docs/reference/metric-definitions.md)
+- [x] Comprehensive tests (12 analyzer integration tests)
+- [x] Documentation updated (concepts/type-safety-metrics.md, metric-definitions, cli-reference)
+- [x] Commit phase
 
 ### Phase 5 — Runtime Boundary Analysis
 - [ ] HTTP request input / query / route parameter detection
@@ -151,6 +151,10 @@ Phase 1 (starts after explicit approval).
 - D12: `typescript` moved to runtime `dependencies` (Compiler API is required at runtime on user machines).
 - D13: no tsconfig.json found → exit 2 with actionable message (same as `tsc` failing on no inputs). Revisit if a real use case needs configless scans.
 - D14: discovery is always restricted to the project directory, even when tsconfig include patterns reach outside; `--config` may live elsewhere but its matched files must be in-scope.
+- D15 (policy): colors moved from picocolors to native `node:util` styleText; picocolors removed. Custom `progressBar` retained (static bar, not a live widget).
+- D16: one AST walk per file over a shared ts.Program. Coverage positions are collected during the walk and classified afterwards (explicit-vs-implicit any needs the full `any` keyword set); finding rules evaluate inline. No rules/ directory — separate rule modules would force multiple traversals.
+- D17: tsconfig "no inputs" error (18003) treated as an empty project, not a config error. Resolves R5.
+- D18: typescript must be a runtime dependency (D12) — confirmed during Phase 4.
 
 ## Last Completed Checks
-- Phase 3: typecheck ✓, 23/23 tests ✓ (CLI integration incl. new failure paths, 7 discovery integration tests on temp fixtures), build ✓, docs:build ✓, built CLI smoke-tested (scan prints Files count for this repo: 10 files).
+- Phase 4: typecheck ✓, 35/35 tests ✓ (12 new analyzer integration tests incl. severity mapping, string-literal suppression false positive, dedupe/order, empty project, syntax errors), build ✓, docs:build ✓, self-scan smoke ✓ (this repo: 99.7% coverage, 332 positions, 4 findings, 0.53s).

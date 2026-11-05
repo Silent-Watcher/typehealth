@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 3 — TypeScript Project Discovery (complete)
+Phase 4 — Core Type Safety Analyzer (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -20,12 +20,14 @@ Phase 3 — TypeScript Project Discovery (complete)
 ## Risks
 - R1: TypeScript 7 global must not be used — resolved: local 5.x pin (D1/D12).
 - R2: Node 24 vs spec's 22.18 baseline — engines declares `>=22.18`; fine.
-- R3: Type Coverage definition is the hardest correctness risk; definition must be documented before Phase 4 implementation.
+- R3: Type Coverage definition — resolved: documented formulas in docs/reference/metric-definitions.md (D16).
 - R4: npm allowScripts policy blocks esbuild postinstall; VitePress verified working without it. Monitor.
-- R5: Empty-project edge (tsconfig matching no inputs) currently exits 2 like `tsc`; may need friendlier handling in Phase 4.
+- R5: Empty-project edge — resolved: tsconfig error 18003 now treated as empty project (D17).
+- R6: `isTypeAssignableTo` used for unrelated-type assertions is a heavier checker call; watch in Phase 8 benchmarks.
 
 ## Verification Log
 - 2026-11-05: environment inspected, planning docs created, planning commit `de75e75`.
-- 2026-11-05 Phase 1: build ✓ (dist/index.js, dist/cli/index.js + d.ts), typecheck ✓ (strict), test ✓ (1 pass, node --test), docs:build ✓ (1.67s), bin executes (exit 1 stub message).
-- 2026-11-05 Phase 2 (pnpm 12.10.1): build ✓, typecheck ✓, tests 22/22 ✓ (unit + CLI integration via spawned process), docs:build ✓, built CLI verified for --version / scan --help / exit codes 0 and 2.
-- 2026-11-05 Phase 3 (+ third-party policy: commander, picocolors, typescript→runtime dep): typecheck ✓, 23/23 tests ✓, build ✓, docs:build ✓, built CLI discovery smoke ✓ (this repo: 10 files).
+- 2026-11-05 Phase 1: build ✓, typecheck ✓, test ✓, docs:build ✓, bin executes.
+- 2026-11-05 Phase 2 (pnpm 12.10.1): build ✓, typecheck ✓, 22/22 tests ✓, docs:build ✓, built CLI verified.
+- 2026-11-05 Phase 3 (+ third-party policy: commander, picocolors→later replaced, typescript→runtime dep): typecheck ✓, 23/23 tests ✓, build ✓, docs:build ✓, discovery smoke ✓.
+- 2026-11-05 Phase 4 (+ colors→node:util styleText): typecheck ✓, 35/35 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (99.7% coverage, 332 positions, 0.53s).
