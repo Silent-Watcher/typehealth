@@ -70,10 +70,12 @@ test('invalid --format value exits 2', () => {
   assert.match(result.stderr, /--format/)
 })
 
-test('--format=html is accepted by the parser', () => {
+test('--format=html writes a report file', () => {
+  // Runs in the project root; the written report file is cleaned up below.
   const result = runCli(['scan', '--format=html'])
-  assert.equal(result.status, 2)
-  assert.match(result.stderr, /--format html is not implemented yet/)
+  assert.equal(result.status, 0)
+  assert.match(result.stdout, /Report written to .*typescope-report\.html/)
+  rmSync(path.join(ROOT, 'typescope-report.html'), { force: true })
 })
 
 test('nonexistent --cwd exits 2', () => {

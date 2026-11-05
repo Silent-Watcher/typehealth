@@ -57,11 +57,13 @@ Metrics are **independent** — no arbitrary composite score. Each has a documen
 - 🌐 **Runtime boundary heuristics** for express/fastify/koa, fetch, JSON.parse, amqplib, KafkaJS, bullmq
 - ⚙️ **Strictness audit** of your tsconfig
 - 🖥️ **Beautiful static terminal report** — CI-safe, `NO_COLOR` aware
+- 📄 **Deterministic JSON report** — versioned schema, embedded metric definitions, diff-friendly
+- 🌗 **Self-contained HTML report** — zero JavaScript, no remote assets, works offline
 - 🔒 **Security-first**: analyzed code is never executed, file discovery is scoped to your project
 - ⚡ **Fast**: one shared TypeScript program, one AST walk per file
 - 📦 **Zero-config**: finds and honors your existing tsconfig (`include`/`exclude` respected)
 
-Planned: JSON and HTML reports (Phase 7), `--fail-under` and CI baseline comparison (Phase 9).
+Planned: `--fail-under` and CI baseline comparison (Phase 9).
 
 ## Requirements
 
@@ -92,7 +94,7 @@ typescope --version
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--format <terminal\|json\|html>` | `terminal` | Output format (json/html in Phase 7) |
+| `--format <terminal\|json\|html>` | `terminal` | `json` → stdout, `html` → `typescope-report.html` in cwd |
 | `--cwd <path>` | `.` | Project directory |
 | `--config <path>` | `<cwd>/tsconfig.json` | tsconfig path |
 | `--no-color` | off | Disable colors (also automatic in CI / with `NO_COLOR`) |
@@ -109,6 +111,7 @@ Full documentation at **[typescope.dev](https://typescope.dev)** (built with Vit
 - [CLI Reference](https://typescope.dev/guide/cli-reference) — every option and exit code
 - [Type Safety Metrics](https://typescope.dev/concepts/type-safety-metrics) — the measurement model
 - [Metric Definitions](https://typescope.dev/reference/metric-definitions) — exact formulas
+- [Terminal / JSON / HTML reports](https://typescope.dev/features/terminal-report) — output formats
 - [Runtime Boundaries](https://typescope.dev/concepts/runtime-boundaries) — what the boundary heuristics can and cannot tell you
 - [Security Model](https://typescope.dev/security/security-model) — the untrusted-input contract
 

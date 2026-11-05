@@ -1,10 +1,12 @@
 import path from 'node:path'
-import { statSync } from 'node:fs'
+import { statSync, writeFileSync } from 'node:fs'
 
 import type { ScanRequest } from '../types.ts'
 import { loadProject } from '../../core/project.ts'
 import { analyzeProject } from '../../core/analyzer.ts'
 import { renderTerminalReport } from '../../reports/terminal.ts'
+import { serializeJsonReport } from '../../reports/json.ts'
+import { renderHtmlReport } from '../../reports/html.ts'
 import { supportsColor } from '../../utils/colors.ts'
 
 /**
@@ -12,11 +14,6 @@ import { supportsColor } from '../../utils/colors.ts'
  * Analysis itself lands in Phase 4; this phase reports discovery results.
  */
 export function runScan(request: ScanRequest, stdout = process.stdout): number {
-  if (request.format !== 'terminal') {
-    console.error(`typescope: --format ${request.format} is not implemented yet (expected in Phase 7)`)
-    return 2
-  }
-
   const projectDir = path.resolve(request.cwd)
   if (!isDirectory(projectDir)) {
     console.error(`typescope: project directory does not exist: ${projectDir}`)
@@ -37,6 +34,25 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
 
   const analysis = analyzeProject(result)
   const color = request.color && supportsColor(stdout)
+  const input = { analysis, projectDir: result.projectDir, configPath: result.configPath }
+
+  if (request.format === 'json') {
+    stdout.write(serializeJsonReport(input))
+    return 0
+  }
+
+  if (request.format === 'html') {
+    // Written to the invoking user's cwd, never into the analyzed project.
+    const outputPath = path.join(process.cwd(), 'typescope-report.html')
+    try {
+      writeFileSync(outputPath, renderHtmlReport(input))
+    } catch (error) {
+      console.error(`typescope: cannot write report to ${outputPath}: ${error instanceof Error ? error.message : error}`)
+      return 2
+    }
+    stdout.write(`Report written to ${outputPath}\n`)
+    return 0
+  }
 
   stdout.write(renderTerminalReport(analysis, { projectDir: result.projectDir, configPath: result.configPath }, color))
   return 0

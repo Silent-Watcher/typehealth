@@ -16,7 +16,7 @@ typescope scan [options]
 
 | Option | Value | Default | Description |
 |--------|-------|---------|-------------|
-| `--format` | `terminal` \| `json` \| `html` | `terminal` | Output format |
+| `--format` | `terminal` \| `json` \| `html` | `terminal` | Output format. `json` prints to stdout, `html` writes `typescope-report.html` to the current working directory |
 | `--cwd` | path | current directory | Project directory to analyze |
 | `--config` | path | `<cwd>/tsconfig.json` | Path to tsconfig.json |
 | `--no-color` | flag | off | Disable colored output |
@@ -30,7 +30,7 @@ A `tsconfig.json` must be resolvable — either via `--config` or in the project
 
 ## Current status
 
-Running `typescope scan` analyzes the project and renders the full terminal report (see [Terminal Report](/features/terminal-report)). `--format json` and `--format html` are accepted by the parser but report "not implemented yet" until Phase 7. See [Analysis Engine](/concepts/analysis-engine) and [Metric Definitions](/reference/metric-definitions).
+All three output formats are implemented: [terminal](/features/terminal-report) (default), [JSON](/features/json-report) and [HTML](/features/html-report). CI gating with `--fail-under` and baseline comparison is planned for Phase 9.
 
 ## Exit codes
 

@@ -3,7 +3,7 @@
 Snapshot: 2026-11-05
 
 ## Current Phase
-Phase 6 — Terminal Reporting UI (complete)
+Phase 7 — JSON and HTML Reports (complete)
 
 ## Environment
 | Item | Value | Notes |
@@ -35,3 +35,4 @@ Phase 6 — Terminal Reporting UI (complete)
 - 2026-11-05 Phase 4 (+ colors→node:util styleText): typecheck ✓, 35/35 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (99.7% coverage, 332 positions, 0.53s).
 - 2026-11-05 Phase 5 (boundary tests delegated to subagent, re-verified): typecheck ✓, 47/47 tests ✓, build ✓, docs:build ✓, self-scan smoke ✓ (0 boundaries in this repo).
 - 2026-11-05 Phase 6 (terminal-report tests delegated to subagent, re-verified): typecheck ✓, 69/69 tests ✓, build ✓, docs:build ✓; suppression heuristic tightened (D22); docs expansion + README.
+- 2026-11-05 Phase 7 (report tests delegated to subagent, re-verified): typecheck ✓, 89/89 tests ✓, build ✓, docs:build ✓; subagent caught missing eligiblePositions/typedPositions definitions in METRIC_DEFINITIONS and a stale html test — both fixed before commit.

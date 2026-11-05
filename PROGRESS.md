@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 6 — Terminal Reporting UI (complete)
-- Completed Phases: 6/10
+- Current Phase: Phase 7 — JSON and HTML Reports (complete)
+- Completed Phases: 7/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -95,12 +95,13 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - Suppression heuristic tightened to match tsc semantics (single-line comments only; @ts-nocheck file-start only) — doc-comment prose no longer false-positives.
 
 ### Phase 7 — JSON and HTML Reports
-- [ ] Stable versioned JSON schema, deterministic ordering
-- [ ] Self-contained responsive HTML report (metric cards, bars, findings, remediation)
-- [ ] All source-derived content escaped; no remote assets; offline
-- [ ] Determinism and HTML-injection tests
-- [ ] Documentation updated
-- [ ] Commit phase
+- [x] Stable versioned JSON schema (schemaVersion 1, embedded metricDefinitions for all 10 metric keys), deterministic ordering, no timestamps
+- [x] Self-contained responsive HTML report (metric cards, bars, severity distribution, per-file health, findings grouped by file)
+- [x] All source-derived content HTML-escaped; zero JavaScript; no remote assets; offline
+- [x] Determinism and HTML-injection tests (20 new tests by subagent, re-verified)
+- [x] Documentation updated (features/json-report.md, features/html-report.md, cli-reference, README)
+- [x] Commit phase
+- Note: html report is written to the invoking user's cwd (documented); remediation suggestions in finding details deferred until richer rule messages exist (Phase 8/9 candidates).
 
 ### Phase 8 — Performance and Security Hardening
 - [ ] Benchmark first; document results before optimizing
@@ -166,4 +167,4 @@ Phase 1 (starts after explicit approval).
 - TODO (user-requested, end of development / Phase 10): add a cool logo (animated if feasible) to the right side of the VitePress landing hero.
 
 ## Last Completed Checks
-- Phase 6: typecheck ✓, 69/69 tests ✓ (22 new terminal-report tests written by subagent, re-verified independently), build ✓, docs:build ✓, demo-project scan produces the documented example output.
+- Phase 7: typecheck ✓, 89/89 tests ✓ (20 new: JSON schema/determinism, escapeHtml XSS payloads, HTML no-script/no-remote-assets/no-injection, spawned-CLI for both formats; subagent-written, re-verified), build ✓, docs:build ✓, demo smoke ✓ (json stdout parses; html file 8.2 KB self-contained).
