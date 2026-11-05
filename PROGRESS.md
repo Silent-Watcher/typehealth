@@ -4,8 +4,8 @@ Single source of truth for development progress. Update after every meaningful m
 
 ## Overall Status
 
-- Current Phase: Phase 0 — Planning (complete, awaiting approval for Phase 1)
-- Completed Phases: 0/10
+- Current Phase: Phase 1 — Initialization (complete)
+- Completed Phases: 1/10
 - Last commit: see `git log -1`
 
 ## Project Overview
@@ -25,18 +25,18 @@ TypeScope is a lightweight TypeScript type safety analyzer distributed as an npm
 - [x] Initial planning commit
 
 ### Phase 1 — Project Initialization
-- [ ] Initialize ESM Node.js TypeScript project (package.json)
-- [ ] Configure strict TypeScript (tsconfig, typecheck script)
-- [ ] Configure tsdown (build + declaration files)
-- [ ] Configure Node.js native test runner (`node --test`)
-- [ ] Configure VitePress + initial docs pages
-- [ ] Create project structure (src/, test/, docs/)
-- [ ] Configure package.json exports and bin entry
-- [ ] Add scripts: build, test, typecheck, docs:dev/build/preview
-- [ ] Verify build passes
-- [ ] Verify tests pass
-- [ ] Verify docs build passes
-- [ ] Commit phase
+- [x] Initialize ESM Node.js TypeScript project (package.json)
+- [x] Configure strict TypeScript (tsconfig, typecheck script)
+- [x] Configure tsdown (build + declaration files)
+- [x] Configure Node.js native test runner (`node --test`)
+- [x] Configure VitePress + initial docs pages
+- [x] Create project structure (src/, test/, docs/)
+- [x] Configure package.json exports and bin entry
+- [x] Add scripts: build, test, typecheck, docs:dev/build/preview
+- [x] Verify build passes
+- [x] Verify tests pass
+- [x] Verify docs build passes
+- [x] Commit phase
 - No source analysis in this phase.
 
 ### Phase 2 — CLI Foundation
@@ -134,12 +134,15 @@ See phase checklists above.
 Phase 1 (starts after explicit approval).
 
 ## Known Issues
-- Global tsc is 7.0.2 (Go-based compiler). TypeScript Compiler API targets the JS compiler; project must pin typescript 5.x as a devDependency. No blocker.
+- npm (12.2.0) blocks esbuild's postinstall script (allowScripts policy). VitePress build verified working without it; revisit only if a future build fails.
 
 ## Technical Decisions
-- D1: TypeScript must be pinned to 5.x locally (global 7.0.2 unsuitable for Compiler API). Decided Phase 0.
+- D1: TypeScript pinned to 5.x locally (global 7.0.2 unsuitable for Compiler API). Decided Phase 0.
 - D2: Metrics stay independent; no composite score in initial phases.
 - D3: No CLI parsing framework unless Phase 2 needs exceed a small hand-written parser.
+- D4: Source/test files import with explicit `.ts` extensions (works with node type stripping, `tsc --noEmit` via `allowImportingTsExtensions`, and tsdown). Decided Phase 1.
+- D5: tsdown `outExtensions` forces `.js`/`.d.ts` output so package.json `exports`/`bin` paths match. Decided Phase 1.
+- D6: `private: true` until Phase 10 to prevent accidental publish.
 
 ## Last Completed Checks
-- Node v24.20.0, npm 12.2.0, git available, repo initialized, no commits yet (before planning commit).
+- Phase 1: `npm run build` (tsdown 0.23.5, ESM + dts, shebang preserved), `npm run typecheck` (tsc 5.x strict), `npm test` (1 passing, node --test), `npm run docs:build` (VitePress 1.6.4) all pass. `node dist/cli/index.js` runs and exits 1 with stub message.
