@@ -1,6 +1,6 @@
 {
   "name": "typehealth",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Lightweight TypeScript type safety analyzer",
   "type": "module",
   "license": "MIT",

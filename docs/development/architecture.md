@@ -22,6 +22,7 @@ Dependencies point one way: the CLI orchestrates, core analyzes, reports render.
 | `src/core/boundaries.ts` | runtime boundary heuristics ([concepts](/concepts/runtime-boundaries)) |
 | `src/core/findings.ts` | Finding/Severity types, deterministic dedupe + ordering |
 | `src/reports/terminal.ts` | static terminal report |
+| `src/reports/markdown.ts` | AI-optimized Markdown report (agent consumption) |
 | `src/utils/colors.ts` | `node:util` styleText wrapper, progress bar primitive |
 
 ## Key decisions

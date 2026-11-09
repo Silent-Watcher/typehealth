@@ -17,6 +17,9 @@ hero:
     - theme: alt
       text: Live sample report
       link: /demo/typehealth-report.html
+    - theme: alt
+      text: Install Agent Skill ⚡
+      link: /features/agent-skill
 ---
 
 <style>
@@ -84,7 +87,17 @@ Duration 0.19s<br>
 
 Every metric is independent with a [documented formula](/reference/metric-definitions). No arbitrary score, ever.
 
-## Three output formats, one engine
+## Built for AI coding agents
+
+Install the official Agent Skill and your AI assistant (Claude Code, Cursor, Gemini CLI, …) knows how to run TypeHealth, read the results, and fix type-safety issues the right way — investigating before changing code, never silencing errors with `as any` or `@ts-ignore`, and never gaming the metrics.
+
+```sh
+npx skills add Silent-Watcher/typehealth
+```
+
+What the Skill brings: automatic detection of installed CLI and project setup · correct CLI usage with the AI-optimized Markdown report · correct metric interpretation · an incremental, evidence-driven fixing workflow · verification loops with real re-scans. [Learn more →](/features/agent-skill)
+
+## Four output formats, one engine
 
 **JSON** — deterministic, versioned, self-describing. Byte-identical across runs on identical input (only the duration varies), safe to commit, diff and snapshot:
 
@@ -121,6 +134,8 @@ Every metric is independent with a [documented formula](/reference/metric-defini
 **HTML** — a single self-contained file: zero JavaScript, no remote assets, full escaping of source-derived content, works offline. [Open a live sample →](/demo/typehealth-report.html)
 
 **Terminal** — what you saw above: static, CI-log-safe, `NO_COLOR` aware.
+
+**Markdown** — deterministic, escape-safe, severity-ordered: purpose-built for AI agents and context windows, with `n/a` vs `0` distinguished and nothing truncated. [See the format →](/features/ai-report)
 
 ## Built for CI from day one
 

@@ -14,7 +14,7 @@ Node's native TypeScript type stripping executes the `.ts` test and source files
 
 | Directory | Content |
 |-----------|---------|
-| `test/unit/` | Pure-function tests (colors, report renderer) |
+| `test/unit/` | Pure-function tests (colors, report renderers, Markdown report, agent Skill) |
 | `test/cli/` | CLI behavior through spawned processes (`node src/cli/index.ts ...`) asserting stdout/stderr and exit codes |
 | `test/integration/` | Analyzer, discovery and boundary tests over real fixtures |
 

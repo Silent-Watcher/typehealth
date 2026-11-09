@@ -61,6 +61,8 @@ export default defineConfig({
             { text: 'Terminal Report', link: '/features/terminal-report' },
             { text: 'JSON Report', link: '/features/json-report' },
             { text: 'HTML Report', link: '/features/html-report' },
+            { text: 'AI Markdown Report', link: '/features/ai-report' },
+            { text: 'Agent Skill', link: '/features/agent-skill' },
             { text: 'CI Integration', link: '/features/ci-integration' },
           ],
         },
