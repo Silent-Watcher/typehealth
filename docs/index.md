@@ -135,7 +135,7 @@ What the Skill brings: automatic detection of installed CLI and project setup ·
 
 **Terminal** — what you saw above: static, CI-log-safe, `NO_COLOR` aware.
 
-**Markdown** — deterministic, escape-safe, severity-ordered: purpose-built for AI agents and context windows, with `n/a` vs `0` distinguished and nothing truncated. [See the format →](/features/ai-report)
+**Markdown** — deterministic, escape-safe, severity-ordered: purpose-built for AI agents and context windows, with `n/a` vs `0` distinguished and nothing truncated. [Open a live sample →](/demo/typehealth-report.md) · [See the format →](/features/ai-report)
 
 ## Built for CI from day one
 

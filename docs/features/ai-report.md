@@ -33,6 +33,10 @@ Sections always appear in this order:
 
 Works with every scan option: `--cwd`, `--config`, `--changed`, `--fail-under`, `--baseline`, `--no-color`. Exit codes are unchanged: the report is printed to stdout even when a gate (`--fail-under`, `--baseline`) fails, so an agent can read the findings and act.
 
+## Live sample
+
+A real report generated from a small demo project: [typehealth-report.md](/demo/typehealth-report.md) (with the [HTML version](/demo/typehealth-report.html) for comparison).
+
 ## Example
 
 ```markdown
