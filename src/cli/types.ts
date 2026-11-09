@@ -1,4 +1,4 @@
-export type OutputFormat = 'terminal' | 'json' | 'html'
+export type OutputFormat = 'terminal' | 'json' | 'html' | 'markdown'
 
 /** Validated options for the scan command, as produced by the CLI parser. */
 export interface ScanRequest {

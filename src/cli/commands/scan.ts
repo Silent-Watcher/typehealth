@@ -8,6 +8,7 @@ import { getChangedFiles } from '../../core/git.ts'
 import { compareBaseline, loadBaseline } from '../../core/baseline.ts'
 import { renderTerminalReport } from '../../reports/terminal.ts'
 import { serializeJsonReport } from '../../reports/json.ts'
+import { renderMarkdownReport } from '../../reports/markdown.ts'
 import { renderHtmlReport } from '../../reports/html.ts'
 import { supportsColor } from '../../utils/colors.ts'
 
@@ -74,6 +75,11 @@ export function runScan(request: ScanRequest, stdout = process.stdout): number {
 
   if (request.format === 'json') {
     stdout.write(serializeJsonReport(input))
+    return exitCode
+  }
+
+  if (request.format === 'markdown') {
+    stdout.write(renderMarkdownReport(input))
     return exitCode
   }
 

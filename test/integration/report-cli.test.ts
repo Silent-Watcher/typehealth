@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { spawnSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import path from 'node:path'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -111,5 +111,81 @@ test('scan --format html exits 0 and writes an escaped, script-free report into 
   } finally {
     rmSync(workspace, { recursive: true, force: true })
     rmSync(outputDir, { recursive: true, force: true })
+  }
+})
+
+test('scan --format markdown exits 0 and prints a sectioned Markdown report to stdout', () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-md-'))
+  const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
+  try {
+    const result = runCli(['scan', '--format', 'markdown', '--cwd', projectDir], workspace)
+    assert.equal(result.status, 0, `expected exit 0, stderr: ${result.stderr}`)
+    assert.ok(result.stdout.startsWith('# TypeHealth Report\n'))
+    assert.ok(result.stdout.includes('## Executive Summary'))
+    assert.ok(result.stdout.includes('## Metrics'))
+    assert.ok(result.stdout.includes('## Findings'))
+    assert.ok(!/\x1b\[/.test(result.stdout), 'expected no ANSI escapes in Markdown output')
+  } finally {
+    rmSync(workspace, { recursive: true, force: true })
+  }
+})
+
+test('scan --format markdown accepts the --format=markdown form and is deterministic', () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-md-eq-'))
+  const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
+  try {
+    const space = runCli(['scan', '--format', 'markdown', '--cwd', projectDir], workspace)
+    const equals = runCli(['scan', '--format=markdown', '--cwd', projectDir], workspace)
+    assert.equal(space.status, 0)
+    assert.equal(equals.status, 0)
+    assert.equal(space.stdout, equals.stdout)
+  } finally {
+    rmSync(workspace, { recursive: true, force: true })
+  }
+})
+
+test('scan --format markdown still gates: --fail-under exits 1 while printing the report', () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-md-gate-'))
+  const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
+  try {
+    const result = runCli(['scan', '--format', 'markdown', '--cwd', projectDir, '--fail-under', '100'], workspace)
+    assert.equal(result.status, 1, `expected exit 1, stderr: ${result.stderr}`)
+    assert.ok(result.stdout.includes('# TypeHealth Report'), 'report must still be printed on gate failure')
+  } finally {
+    rmSync(workspace, { recursive: true, force: true })
+  }
+})
+
+test('scan --format markdown works with --changed and reports repo-relative paths', () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-md-changed-'))
+  const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, PROJECT_FILES)
+  execFileSync('git', ['init'], { cwd: projectDir })
+  execFileSync('git', ['add', '-A'], { cwd: projectDir })
+  execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-m', 'init'], { cwd: projectDir })
+  // Leave an uncommitted modification so `--changed` (diff vs HEAD) selects it.
+  writeFileSync(path.join(projectDir, 'src/index.ts'), `${readFileSync(path.join(projectDir, 'src/index.ts'), 'utf8')}const c = 1;\n`)
+  try {
+    const result = runCli(['scan', '--format', 'markdown', '--cwd', projectDir, '--changed'], workspace)
+    assert.equal(result.status, 0, `expected exit 0, stderr: ${result.stderr}`)
+    assert.ok(result.stdout.includes('src/index.ts'), 'expected repo-relative file paths')
+  } finally {
+    rmSync(workspace, { recursive: true, force: true })
+  }
+})
+
+test('scan --format markdown escapes hostile content coming from analyzed files', () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), 'typehealth-md-evil-'))
+  const projectDir = makeProject(workspace, { compilerOptions: { strict: true } }, {
+    'src/evil.ts': 'const a: any = JSON.parse("| fake | row |\n# heading"); // @ts-ignore',
+  })
+  try {
+    const result = runCli(['scan', '--format', 'markdown', '--cwd', projectDir], workspace)
+    assert.equal(result.status, 0, `expected exit 0, stderr: ${result.stderr}`)
+    for (const line of result.stdout.split('\n')) {
+      assert.ok(!line.startsWith('# heading'), 'message content escaped into a heading')
+      assert.ok(!line.startsWith('| fake |'), 'message content escaped into a table row')
+    }
+  } finally {
+    rmSync(workspace, { recursive: true, force: true })
   }
 })

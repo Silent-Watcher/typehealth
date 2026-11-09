@@ -21,7 +21,7 @@ export function main(argv: readonly string[], stdout = process.stdout): number {
     .description("Analyze a TypeScript project's type safety")
     .addOption(
       new Option('--format <format>', 'Output format')
-        .choices(['terminal', 'json', 'html'])
+        .choices(['terminal', 'json', 'html', 'markdown'])
         .default('terminal'),
     )
     .option('--cwd <path>', 'Project directory to analyze', '.')
